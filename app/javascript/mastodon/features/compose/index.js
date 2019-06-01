@@ -109,7 +109,7 @@ class Compose extends React.PureComponent {
             <NavigationContainer onClose={this.onBlur} />
 
             <ComposeFormContainer />
-            <Accouncements />
+            <Announcements />
             <div className='drawer__inner__mastodon'>
               <img alt='' draggable='false' src={mascot || elephantUIPlane} />
             </div>
