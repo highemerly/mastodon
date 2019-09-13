@@ -1,0 +1,10 @@
+{
+  "default": {
+    "body": "このサーバは開発環境です。予告なく停止する場合があります。"
+  },
+  "profile_blog_20190602": {
+    "body": "プロフィールページを充実させてみませんか？詳細はこちらをクリック！",
+    "icon": "https://media.handon.club/custom_emojis/images/000/000/202/original/5ed8775b5eb08fce.png",
+    "href": "https://handon.hatenablog.jp/entry/2019/04/11/111719"
+  }
+}
