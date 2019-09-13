@@ -3,7 +3,7 @@
 class Api::V2::SearchController < Api::BaseController
   include Authorization
 
-  RESULTS_LIMIT = 20
+  RESULTS_LIMIT = 60
 
   before_action -> { doorkeeper_authorize! :read, :'read:search' }
   before_action :require_user!
@@ -21,7 +21,7 @@ class Api::V2::SearchController < Api::BaseController
     SearchService.new.call(
       params[:q],
       current_account,
-      limit_param(RESULTS_LIMIT),
+      RESULTS_LIMIT,
       search_params.merge(resolve: truthy_param?(:resolve))
     )
   end
