@@ -35,7 +35,9 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }))
+    definition = StatusesIndex.filter(term: { searchable_by: @account.id })
+                              .query(match: { 'text.stemmed': { query: @query, operator: 'and'}})
+                              .order(id: { order: 'desc' })
 
     if @options[:account_id].present?
       definition = definition.filter(term: { account_id: @options[:account_id] })
