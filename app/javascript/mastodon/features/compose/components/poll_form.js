@@ -157,13 +157,16 @@ class PollForm extends ImmutablePureComponent {
         </ul>
 
         <div className='poll__footer'>
-          <button disabled={options.size >= 4} className='button button-secondary' onClick={this.handleAddOption}><Icon id='plus' /> <FormattedMessage {...messages.add_option} /></button>
+          <button disabled={options.size >= 16} className='button button-secondary' onClick={this.handleAddOption}><Icon id='plus' /> <FormattedMessage {...messages.add_option} /></button>
 
           {/* eslint-disable-next-line jsx-a11y/no-onchange */}
           <select value={expiresIn} onChange={this.handleSelectDuration}>
+            <option value={60}>{intl.formatMessage(messages.minutes, { number: 1 })}</option>
             <option value={300}>{intl.formatMessage(messages.minutes, { number: 5 })}</option>
+            <option value={600}>{intl.formatMessage(messages.minutes, { number: 10 })}</option>
             <option value={1800}>{intl.formatMessage(messages.minutes, { number: 30 })}</option>
             <option value={3600}>{intl.formatMessage(messages.hours, { number: 1 })}</option>
+            <option value={7200}>{intl.formatMessage(messages.hours, { number: 2 })}</option>
             <option value={21600}>{intl.formatMessage(messages.hours, { number: 6 })}</option>
             <option value={86400}>{intl.formatMessage(messages.days, { number: 1 })}</option>
             <option value={259200}>{intl.formatMessage(messages.days, { number: 3 })}</option>
