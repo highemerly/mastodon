@@ -36,6 +36,7 @@ class UserSettingsDecorator
     user.settings['advanced_layout']     = advanced_layout_preference if change?('setting_advanced_layout')
     user.settings['use_blurhash']        = use_blurhash_preference if change?('setting_use_blurhash')
     user.settings['use_pending_items']   = use_pending_items_preference if change?('setting_use_pending_items')
+    user.settings['local_only_public']   = local_only_public_preference if change?('setting_local_only_public')
     user.settings['trends']              = trends_preference if change?('setting_trends')
   end
 
@@ -121,6 +122,10 @@ class UserSettingsDecorator
 
   def use_pending_items_preference
     boolean_cast_setting 'setting_use_pending_items'
+  end
+
+  def local_only_public_preference
+    boolean_cast_setting 'setting_local_only_public'
   end
 
   def trends_preference
