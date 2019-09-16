@@ -28,7 +28,7 @@ ja:
         phrase: トゥートの大文字小文字や閲覧注意に関係なく一致
         scopes: アプリの API に許可するアクセス権を選択してください。最上位のスコープを選択する場合、個々のスコープを選択する必要はありません。
         setting_aggregate_reblogs: 最近ブーストされたトゥートが新たにブーストされても表示しません (設定後受信したものにのみ影響)
-        setting_local_only_public: トゥート毎の設定によらず、他のインスタンスにはフォロワー限定トゥートとして配信します (DMを除く)
+        setting_local_only_public: トゥート毎の設定によらず、他のサーバーへ配信するときだけフォロワー限定トゥートとして配信します (DMを除く)
         setting_default_sensitive: 閲覧注意状態のメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
         setting_display_media_default: 閲覧注意としてマークされたメディアは隠す
         setting_display_media_hide_all: 全てのメディアを常に隠す
