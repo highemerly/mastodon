@@ -67,3 +67,7 @@ yarn-debug.log
 
 # Ignore Docker option files
 docker-compose.override.yml
+
+# Add by highemerly
+public/announcements.json
+public/server-info.html
