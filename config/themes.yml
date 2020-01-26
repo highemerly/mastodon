@@ -1,3 +1,7 @@
 default: styles/application.scss
 contrast: styles/contrast.scss
 mastodon-light: styles/mastodon-light.scss
+mastodon-instance-ticker-type12: styles/mastodon-instance-ticker-type12.scss
+contrast-instance-ticker-type12: styles/contrast-instance-ticker-type12.scss
+mastodon-light-instance-ticker-type12: styles/mastodon-light-instance-ticker-type12.scss
+

@@ -1312,6 +1312,9 @@ ja:
       <p>オリジナルの出典: <a href="https://github.com/discourse/discourse">Discourse privacy policy</a></p>
     title: "%{instance} 利用規約・プライバシーポリシー"
   themes:
+    mastodon-instance-ticker-type12: Mastodon (ダーク) + InstanceTicker
+    mastodon-light-instance-ticker-type12: Mastodon (ライト) + InstanceTicker
+    contrast-instance-ticker-type12: Mastodon (ハイコントラスト) + InstanceTicker
     contrast: Mastodon (ハイコントラスト)
     default: Mastodon (ダーク)
     mastodon-light: Mastodon (ライト)
