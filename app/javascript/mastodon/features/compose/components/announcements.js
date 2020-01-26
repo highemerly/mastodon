@@ -15,10 +15,10 @@ class Announcement extends React.PureComponent {
     const { item } = this.props;
 
     const contents = [];
-    contents.push(<div key='body' className='announcements__body'>{item.get('body')}</div>);
+    contents.push(<div key='body' className='announcements2__body'>{item.get('body')}</div>);
     if (item.get('icon')) {
       contents.push(
-        <div key='icon' className='announcements__icon'>
+        <div key='icon' className='announcements2__icon'>
           <img src={item.get('icon')} alt='' />
         </div>
       );
@@ -27,8 +27,8 @@ class Announcement extends React.PureComponent {
     const href = item.get('href');
 
     const classname = classnames({
-      'announcements__item': true,
-      'announcements__item--clickable': !!href,
+      'announcements2__item': true,
+      'announcements2__item--clickable': !!href,
     });
 
     if (!href) {
@@ -107,7 +107,7 @@ export default class Announcements extends React.PureComponent {
     const { items } = this.state;
 
     return (
-      <ul className='announcements'>
+      <ul className='announcements2'>
         {items.entrySeq().map(([key, item]) =>
           (<li key={key}>
             <Announcement item={item} />
