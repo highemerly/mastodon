@@ -1255,6 +1255,9 @@ en:
       <p>Originally adapted from the <a href="https://github.com/discourse/discourse">Discourse privacy policy</a>.</p>
     title: "%{instance} Terms of Service and Privacy Policy"
   themes:
+    mastodon-instance-ticker-type12: Mastodon (Dark) with InstanceTicker
+    mastodon-light-instance-ticker-type12: Mastodon (Light) with InstanceTicker
+    contrast-instance-ticker-type12: Mastodon (High contrast) with InstanceTicker
     contrast: Mastodon (High contrast)
     default: Mastodon (Dark)
     mastodon-light: Mastodon (Light)
