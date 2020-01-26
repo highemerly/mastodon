@@ -1595,6 +1595,9 @@ en:
   tags:
     does_not_match_previous_name: does not match the previous name
   themes:
+    mastodon-instance-ticker-type1: Mastodon (Dark) with InstanceTicker Type-1
+    mastodon-light-instance-ticker-type1: Mastodon (Light) with InstanceTicker Type-1
+    contrast-instance-ticker-type1: Mastodon (High contrast) with InstanceTicker Type-1
     contrast: Mastodon (High contrast)
     default: Mastodon (Dark)
     mastodon-light: Mastodon (Light)
