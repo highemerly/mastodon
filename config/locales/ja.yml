@@ -1530,6 +1530,9 @@ ja:
   tags:
     does_not_match_previous_name: 以前の名前と一致しません
   themes:
+    mastodon-instance-ticker-type1: Mastodon (ダーク) + InstanceTicker Type-1
+    mastodon-light-instance-ticker-type1: Mastodon (ライト) + InstanceTicker Type-1
+    contrast-instance-ticker-type1: Mastodon (ハイコントラスト) + InstanceTicker Type-1
     contrast: Mastodon (ハイコントラスト)
     default: Mastodon (ダーク)
     mastodon-light: Mastodon (ライト)
