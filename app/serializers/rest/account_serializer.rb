@@ -59,4 +59,6 @@ class REST::AccountSerializer < ActiveModel::Serializer
   def last_status_at
     object.last_status_at&.to_date&.iso8601
   end
+
+  include Friends::ProfileEmoji::SerializerExtension
 end

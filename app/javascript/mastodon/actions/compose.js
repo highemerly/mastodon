@@ -453,7 +453,11 @@ export function fetchComposeSuggestions(token) {
   return (dispatch, getState) => {
     switch (token[0]) {
     case ':':
-      fetchComposeSuggestionsEmojis(dispatch, getState, token);
+      if (token[1] == '@') {
+        fetchComposeSuggestionsAccounts(dispatch, getState, token.substr(1, token.length));
+      } else {
+        fetchComposeSuggestionsEmojis(dispatch, getState, token);
+      }
       break;
     case '#':
       fetchComposeSuggestionsTags(dispatch, getState, token);
@@ -502,6 +506,9 @@ export function selectComposeSuggestion(position, token, suggestion, path) {
     } else if (suggestion.type === 'account') {
       completion    = getState().getIn(['accounts', suggestion.id, 'acct']);
       startPosition = position;
+      if (token[0] == ':') {
+        completion = `@${completion}:`;
+      }
     }
 
     dispatch({
