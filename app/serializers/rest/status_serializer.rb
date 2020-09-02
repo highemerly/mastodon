@@ -158,4 +158,6 @@ class REST::StatusSerializer < ActiveModel::Serializer
       tag_url(object)
     end
   end
+
+  include Friends::ProfileEmoji::SerializerExtension
 end
