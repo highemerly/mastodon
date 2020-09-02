@@ -56,7 +56,7 @@
 
 class Account < ApplicationRecord
   USERNAME_RE = /[a-z0-9_]+([a-z0-9_\.-]+[a-z0-9_]+)?/i
-  MENTION_RE  = /(?<=^|[^\/[:word:]])@((#{USERNAME_RE})(?:@[[:word:]\.\-]+[a-z0-9]+)?)/i
+  MENTION_RE  = /(?<=^|[^\/[:word:]:])@((#{USERNAME_RE})(?:@[[:word:]\.\-]+[a-z0-9]+)?)/i
 
   include AccountAssociations
   include AccountAvatar
@@ -540,7 +540,7 @@ class Account < ApplicationRecord
   end
 
   def emojis
-    @emojis ||= CustomEmoji.from_text(emojifiable_text, domain)
+    @emojis ||= CustomEmoji.from_text(emojifiable_text, domain) + profile_emojis
   end
 
   before_create :generate_keys
@@ -580,4 +580,6 @@ class Account < ApplicationRecord
   def clean_feed_manager
     FeedManager.instance.clean_feeds!(:home, [id])
   end
+
+  include Friends::ProfileEmoji::AccountExtension
 end

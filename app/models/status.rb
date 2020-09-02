@@ -225,7 +225,7 @@ class Status < ApplicationRecord
     fields  = [spoiler_text, text]
     fields += preloadable_poll.options unless preloadable_poll.nil?
 
-    @emojis = CustomEmoji.from_text(fields.join(' '), account.domain)
+    @emojis = CustomEmoji.from_text(fields.join(' '), account.domain) + profile_emojis
   end
 
   def replies_count
@@ -439,4 +439,6 @@ class Status < ApplicationRecord
       AccountConversation.remove_status(inbox_owner, self)
     end
   end
+
+  include Friends::ProfileEmoji::StatusExtension
 end

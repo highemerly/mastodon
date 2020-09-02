@@ -96,4 +96,6 @@ class REST::AccountSerializer < ActiveModel::Serializer
   def moved_and_not_nested?
     object.moved? && object.moved_to_account.moved_to_account_id.nil?
   end
+  
+  include Friends::ProfileEmoji::SerializerExtension
 end
