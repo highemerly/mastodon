@@ -7,8 +7,11 @@
   color: #fffacd !important ;
 }
 /* Change visibility icon color (Direct) */
+.status .fa-envelope::before {
+  color: #FD0 !important ;
+}
 .detailed-status .fa-envelope::before {
-    color: #FD0 !important ;
+  color: #FD0 !important ;
 }
 /* Disable visibility icon when it is public */
 .status-public .fa-globe:before {
