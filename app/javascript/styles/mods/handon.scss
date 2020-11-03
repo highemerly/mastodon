@@ -20,9 +20,11 @@
   color:#ff6347 !important ;
 }
 /* Enlarge custom emojis */
-p > .emojione[alt^=":"]:only-child {
-  width: 2.5em; height: 2.5em; margin: 0;
-}
 p > .emojione[alt^=":"]:active {
+  width: 7em; height: 7em; margin: 0;
+}
+
+/* Stamp feature for emojis */
+span.handon-emoji-only-content > p:only-child > .handon-emojione-first[alt^=":"] {
   width: 7em; height: 7em; margin: 0;
 }

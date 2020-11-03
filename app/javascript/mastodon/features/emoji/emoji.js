@@ -23,9 +23,11 @@ const emojify = (str, customEmojis = {}) => {
   const tagCharsWithoutEmojis = '<&';
   const tagCharsWithEmojis = Object.keys(customEmojis).length ? '<&:' : '<&';
   let rtn = '', tagChars = tagCharsWithEmojis, invisible = 0;
+  let contentNaturalFlag, contentEmojiFlag = false;
   for (;;) {
     let match, i = 0, tag;
     while (i < str.length && (tag = tagChars.indexOf(str[i])) === -1 && (invisible || !(match = trie.search(str.slice(i))))) {
+      contentNaturalFlag = true;
       i += str.codePointAt(i) < 65536 ? 1 : 2;
     }
     let rend, replacement = '';
@@ -42,7 +44,9 @@ const emojify = (str, customEmojis = {}) => {
         // if you want additional emoji handler, add statements below which set replacement and return true.
         if (shortname in customEmojis) {
           const filename = autoPlayGif ? customEmojis[shortname].url : customEmojis[shortname].static_url;
-          replacement = `<img draggable="false" class="emojione custom-emoji" alt="${shortname}" title="${shortname}" src="${filename}" data-original="${customEmojis[shortname].url}" data-static="${customEmojis[shortname].static_url}" />`;
+          const classname = contentEmojiFlag ? 'emojione custom-emoji' : 'emojione handon-emojione-first custom-emoji';
+          contentEmojiFlag = true;
+          replacement = `<img draggable="false" class="${classname}" alt="${shortname}" title="${shortname}" src="${filename}" data-original="${customEmojis[shortname].url}" data-static="${customEmojis[shortname].static_url}" />`;
           return true;
         }
         return false;
@@ -73,7 +77,9 @@ const emojify = (str, customEmojis = {}) => {
     } else { // matched to unicode emoji
       const { filename, shortCode } = unicodeMapping[match];
       const title = shortCode ? `:${shortCode}:` : '';
-      replacement = `<img draggable="false" class="emojione" alt="${match}" title="${title}" src="${assetHost}/emoji/${emojiFilename(filename)}.svg" />`;
+      const classname = contentEmojiFlag ? 'emojione' : 'emojione handon-emojione-first';
+      contentEmojiFlag = true;
+      replacement = `<img draggable="false" class="${classname}" alt="${match}" title="${title}" src="${assetHost}/emoji/${emojiFilename(filename)}.svg" />`;
       rend = i + match.length;
       // If the matched character was followed by VS15 (for selecting text presentation), skip it.
       if (str.codePointAt(rend) === 65038) {
@@ -82,6 +88,11 @@ const emojify = (str, customEmojis = {}) => {
     }
     rtn += str.slice(0, i) + replacement;
     str = str.slice(rend);
+  }
+
+  //add stamp feature for emoji
+  if (!contentNaturalFlag) {
+    return '<span class="handon-emoji-only-content">' + rtn + str + '</span>';
   }
   return rtn + str;
 };
