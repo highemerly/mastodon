@@ -530,7 +530,7 @@ class Account < ApplicationRecord
   end
 
   def emojis
-    @emojis ||= CustomEmoji.from_text(emojifiable_text, domain)
+    @emojis ||= CustomEmoji.from_text(emojifiable_text, domain) + profile_emojis
   end
 
   before_create :generate_keys
@@ -586,4 +586,6 @@ class Account < ApplicationRecord
 
     CanonicalEmailBlock.where(reference_account: self).delete_all
   end
+
+  include Friends::ProfileEmoji::AccountExtension
 end
