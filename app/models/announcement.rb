@@ -65,7 +65,7 @@ class Announcement < ApplicationRecord
   end
 
   def emojis
-    @emojis ||= CustomEmoji.from_text(text)
+    @emojis ||= CustomEmoji.from_text(text) + profile_emojis
   end
 
   def reactions(account = nil)
@@ -95,4 +95,6 @@ class Announcement < ApplicationRecord
     self.published = true
     self.published_at = Time.now.utc
   end
+
+  include Friends::ProfileEmoji::AnnouncementsExtension
 end
