@@ -61,4 +61,6 @@ class REST::AnnouncementSerializer < ActiveModel::Serializer
       ActivityPub::TagManager.instance.url_for(object)
     end
   end
+
+  include Friends::ProfileEmoji::SerializerExtension
 end
