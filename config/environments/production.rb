@@ -1,4 +1,10 @@
 Rails.application.configure do
+  # add by highemerly
+  config.hosts << "web1-da-tk2.handon.club"
+  config.hosts << "web1-pa-tk2.handon.club"
+  config.hosts << "web2-da-tk2.handon.club"
+  config.hosts << "web2-pa-tk2.handon.club"
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
