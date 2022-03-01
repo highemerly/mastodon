@@ -10,3 +10,9 @@
 .notification a[href^='https://dev.handon.club/'].notification__display-name::after {
     display: none !important ;
 }
+.notification a[href^='https://handon.club/'].notification__display-name::before {
+    display: none !important ;
+}
+.notification a[href^='https://dev.handon.club/'].notification__display-name::before {
+    display: none !important ;
+}
