@@ -1731,12 +1731,20 @@ en:
   tags:
     does_not_match_previous_name: does not match the previous name
   themes:
-    mastodon-instance-ticker-type1: Mastodon (Dark) with InstanceTicker Type-1
-    mastodon-light-instance-ticker-type1: Mastodon (Light) with InstanceTicker Type-1
-    contrast-instance-ticker-type1: Mastodon (High contrast) with InstanceTicker Type-1
-    contrast: Mastodon (High contrast)
-    default: Mastodon (Dark)
-    mastodon-light: Mastodon (Light)
+    vanilla-default: Standard Mastodon (Dark)
+    vanilla-light: Standard Mastodon (Light)
+    vanilla-contrast: Standard Mastodon (High contrast)
+    instance-ticker-type1-default: Handon (Dark) with InstanceTicker Type-1
+    instance-ticker-type1-light: Handon (Light) with InstanceTicker Type-1
+    instance-ticker-type1-contrast: Handon (High contrast) with InstanceTicker Type-1
+    instance-ticker-type1-cantadark: Handon (Canta Dark with 100% screen width) with InstanceTicker Type-1
+    instance-ticker-type1-blacklead: Handon (BlackLead)
+    blacklead: Handon (BlackLead)
+    cantadark: Handon (Canta Dark with 100% screen width)
+    contrast: Handon (High contrast)
+    default: Handon (Dark)
+    mastodon-light: Handon (Light)
+    blue: Handon (Blue by Xerto)
   time:
     formats:
       default: "%b %d, %Y, %H:%M"

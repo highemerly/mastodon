@@ -1698,12 +1698,19 @@ ja:
   tags:
     does_not_match_previous_name: 以前の名前と一致しません
   themes:
-    mastodon-instance-ticker-type1: Mastodon (ダーク) + InstanceTicker Type-1
-    mastodon-light-instance-ticker-type1: Mastodon (ライト) + InstanceTicker Type-1
-    contrast-instance-ticker-type1: Mastodon (ハイコントラスト) + InstanceTicker Type-1
-    contrast: Mastodon (ハイコントラスト)
-    default: Mastodon (ダーク)
-    mastodon-light: Mastodon (ライト)
+    vanilla-default: Mastodon標準（ダーク）
+    vanilla-light: Mastodon標準（ライト）
+    vanilla-contrast: Mastodon標準（ハイコントラスト）
+    instance-ticker-type1-default: Handon (ダーク) + InstanceTicker Type1
+    instance-ticker-type1-light: Handon (ライト) + InstanceTicker Type1
+    instance-ticker-type1-contrast: Handon (ハイコントラスト) + InstanceTicker Type1
+    instance-ticker-type1-cantadark: Handon (Canta Dark / 100%幅) + InstanceTicker Type1
+    instance-ticker-type1-blacklead: Handon (BlackLead) + InstanceTicker Type1
+    blacklead: Handon (BlackLead)
+    cantadark: Handon (Canta Dark / 100%幅)
+    contrast: Handon (ハイコントラスト)
+    default: Handon (ダーク)
+    mastodon-light: Handon (ライト)
   time:
     formats:
       default: "%Y年%m月%d日 %H:%M"
