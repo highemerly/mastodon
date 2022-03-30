@@ -510,6 +510,7 @@ class Status extends ImmutablePureComponent {
           {prepend}
 
           <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted })} data-id={status.get('id')}>
+            <div className='status__expand' onClick={this.handleClick} role='presentation' />
             <div className='status__info'>
               <a onClick={this.handleClick} href={`/@${status.getIn(['account', 'acct'])}\/${status.get('id')}`} className='status__relative-time' target='_blank' rel='noopener noreferrer'>
                 <span className='status__visibility-icon'><Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></span>
