@@ -15,6 +15,7 @@ import { openModal } from 'mastodon/actions/modal';
 import elephantUIPlane from '../../../images/elephant_ui_plane.svg';
 import { mascot } from '../../initial_state';
 import Icon from 'mastodon/components/icon';
+import Announcements from './components/announcements';
 import { logOut } from 'mastodon/utils/log_out';
 import Column from 'mastodon/components/column';
 import { Helmet } from 'react-helmet';
@@ -116,7 +117,7 @@ class Compose extends React.PureComponent {
               <NavigationContainer onClose={this.onBlur} />
 
               <ComposeFormContainer />
-
+              <Announcements />
               <div className='drawer__inner__mastodon'>
                 <img alt='' draggable='false' src={mascot || elephantUIPlane} />
               </div>
@@ -130,7 +131,7 @@ class Compose extends React.PureComponent {
               )}
             </Motion>
           </div>
-        </div>
+      </div>
       );
     }
 

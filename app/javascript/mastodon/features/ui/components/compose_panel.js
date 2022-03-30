@@ -6,6 +6,7 @@ import ComposeFormContainer from 'mastodon/features/compose/containers/compose_f
 import NavigationContainer from 'mastodon/features/compose/containers/navigation_container';
 import LinkFooter from './link_footer';
 import ServerBanner from 'mastodon/components/server_banner';
+import Announcements from 'mastodon/features/compose/components/announcements';
 import { changeComposing, mountCompose, unmountCompose } from 'mastodon/actions/compose';
 
 export default @connect()
@@ -57,6 +58,7 @@ class ComposePanel extends React.PureComponent {
           <React.Fragment>
             <NavigationContainer onClose={this.onBlur} />
             <ComposeFormContainer singleColumn />
+             <Announcements />
           </React.Fragment>
         )}
 
