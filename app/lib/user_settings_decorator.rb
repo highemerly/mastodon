@@ -36,6 +36,7 @@ class UserSettingsDecorator
     user.settings['advanced_layout']     = advanced_layout_preference if change?('setting_advanced_layout')
     user.settings['use_blurhash']        = use_blurhash_preference if change?('setting_use_blurhash')
     user.settings['use_pending_items']   = use_pending_items_preference if change?('setting_use_pending_items')
+    user.settings['hidden_direct']       = hidden_direct_preference if change?('setting_hidden_direct')
     user.settings['trends']              = trends_preference if change?('setting_trends')
     user.settings['crop_images']         = crop_images_preference if change?('setting_crop_images')
     user.settings['always_send_emails']  = always_send_emails_preference if change?('setting_always_send_emails')
@@ -123,6 +124,10 @@ class UserSettingsDecorator
 
   def use_pending_items_preference
     boolean_cast_setting 'setting_use_pending_items'
+  end
+
+  def hidden_direct_preference
+    boolean_cast_setting 'setting_hidden_direct'
   end
 
   def trends_preference
