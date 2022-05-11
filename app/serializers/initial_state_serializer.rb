@@ -48,6 +48,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:advanced_layout]   = object.current_account.user.setting_advanced_layout
       store[:use_blurhash]      = object.current_account.user.setting_use_blurhash
       store[:use_pending_items] = object.current_account.user.setting_use_pending_items
+      store[:hidden_direct]     = object.current_account.user.setting_hidden_direct
       store[:trends]            = Setting.trends && object.current_account.user.setting_trends
       store[:crop_images]       = object.current_account.user.setting_crop_images
     else

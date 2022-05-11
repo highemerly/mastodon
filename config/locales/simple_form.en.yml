@@ -50,6 +50,7 @@ en:
         scopes: Which APIs the application will be allowed to access. If you select a top-level scope, you don't need to select individual ones.
         setting_aggregate_reblogs: Do not show new boosts for posts that have been recently boosted (only affects newly-received boosts)
         setting_always_send_emails: Normally e-mail notifications won't be sent when you are actively using Mastodon
+        hidden_direct: Do not show direct messages in timeline feed.
         setting_default_sensitive: Sensitive media is hidden by default and can be revealed with a click
         setting_display_media_default: Hide media marked as sensitive
         setting_display_media_hide_all: Always hide media
@@ -193,6 +194,7 @@ en:
         setting_advanced_layout: Enable advanced web interface
         setting_aggregate_reblogs: Group boosts in timelines
         setting_always_send_emails: Always send e-mail notifications
+        setting_hidden_direct: '[ONLY handon] Hide DM in home timeline'
         setting_auto_play_gif: Auto-play animated GIFs
         setting_boost_modal: Show confirmation dialog before boosting
         setting_crop_images: Crop images in non-expanded posts to 16x9
