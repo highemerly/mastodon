@@ -22,7 +22,7 @@ class Api::V1::Trends::StatusesController < Api::BaseController
   end
 
   def statuses_from_trends
-    scope = Trends.statuses.query.allowed
+    scope = Trends.statuses.query.allowed.in_locale(content_locale)
     scope = scope.filtered_for(current_account) if user_signed_in?
     scope.offset(offset_param).limit(limit_param(DEFAULT_STATUSES_LIMIT))
   end
