@@ -34,6 +34,7 @@ defaults: &defaults
   advanced_layout: false
   use_blurhash: true
   use_pending_items: false
+  hidden_direct: true
   trends: true
   trends_as_landing_page: true
   trendable_by_default: false
