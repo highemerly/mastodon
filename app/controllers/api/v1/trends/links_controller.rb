@@ -24,7 +24,7 @@ class Api::V1::Trends::LinksController < Api::BaseController
   end
 
   def links_from_trends
-    Trends.links.query.allowed.in_locale(content_locale).offset(offset_param).limit(limit_param(DEFAULT_LINKS_LIMIT))
+    Trends.links.query.allowed.offset(offset_param).limit(limit_param(DEFAULT_LINKS_LIMIT))
   end
 
   def insert_pagination_headers
