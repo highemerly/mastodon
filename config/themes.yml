@@ -8,6 +8,6 @@ instance-ticker-type1-contrast: styles/instance-ticker-type1-contrast.scss
 instance-ticker-type1-light: styles/instance-ticker-type1-light.scss
 instance-ticker-type1-blacklead: styles/instance-ticker-type1-blacklead.scss
 instance-ticker-type1-cantadark: styles/instance-ticker-type1-cantadark.scss
-vanilla-default: styles/application.scss
+vanilla-default: styles/default.scss
 vanilla-contrast: styles/contrast.scss
 vanilla-light: styles/mastodon-light.scss
