@@ -4,3 +4,15 @@
 .drawer__inner__mastodon > img {
   display: none;
 }
+
+.handon-only-visible {
+  display: none;
+  margin: 0;
+  padding: 0;
+}
+
+div.columns-area__panels__pane__inner a.column-link[href="/publish"] {
+  display: none;
+  width: 0;
+}
+
