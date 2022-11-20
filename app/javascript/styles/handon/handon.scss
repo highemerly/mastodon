@@ -81,15 +81,19 @@
 }
 
 /* Add post button to side bar */
-div.ui__header div.ui__header__links a[href="/publish"] {
-  display: none;
-}
+//div.ui__header div.ui__header__links a[href="/publish"] {
+//  display: none;
+//}
 
 div.columns-area__panels__pane__inner a.column-link[href="/publish"] {
   background-color: #595aff;
   border: 6px;
   border-radius: 6px;
   color: $white;
+}
+
+div.columns-area__panels__pane__inner a.column-link.active[href="/publish"] {
+  display: none;
 }
 
 /* Contract top navi bar */
