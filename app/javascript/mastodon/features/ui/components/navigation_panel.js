@@ -26,6 +26,7 @@ const messages = defineMessages({
   followsAndFollowers: { id: 'navigation_bar.follows_and_followers', defaultMessage: 'Follows and followers' },
   about: { id: 'navigation_bar.about', defaultMessage: 'About' },
   search: { id: 'navigation_bar.search', defaultMessage: 'Search' },
+  post: { id: 'compose_form.publish', defaultMessage: 'Toot!' },
 });
 
 export default @injectIntl
@@ -91,7 +92,7 @@ class NavigationPanel extends React.Component {
             <hr />
 
             <ColumnLink transparent href='/settings/preferences' icon='cog' text={intl.formatMessage(messages.preferences)} />
-            <ColumnLink transparent to='/publish' icon='pencil' text='post' />
+            <ColumnLink transparent to='/publish' icon='pencil' text={intl.formatMessage(messages.post)} />
 
           </React.Fragment>
         )}
