@@ -62,8 +62,14 @@ export default class DisplayName extends React.PureComponent {
         acct = `${acct}@${localDomain}`;
       }
 
+      let suffixClassName = 'display-name__account';
+
+      if (acct.indexOf('@') === -1) {
+        suffixClassName = suffixClassName + ' handon-local-account';
+      }
+
       displayName = <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }} /></bdi>;
-      suffix      = <span className='display-name__account'>@{acct}</span>;
+      suffix      = <span className={suffixClassName}>@{acct}</span>;
     } else {
       displayName = <bdi><strong className='display-name__html'><Skeleton width='10ch' /></strong></bdi>;
       suffix = <span className='display-name__account'><Skeleton width='7ch' /></span>;

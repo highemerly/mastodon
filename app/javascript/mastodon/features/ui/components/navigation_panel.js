@@ -91,6 +91,8 @@ class NavigationPanel extends React.Component {
             <hr />
 
             <ColumnLink transparent href='/settings/preferences' icon='cog' text={intl.formatMessage(messages.preferences)} />
+            <ColumnLink transparent to='/publish' icon='pencil' text='post' />
+
           </React.Fragment>
         )}
 
