@@ -62,7 +62,7 @@ class Account < ApplicationRecord
   )
 
   USERNAME_RE   = /[a-z0-9_]+([a-z0-9_\.-]+[a-z0-9_]+)?/i
-  MENTION_RE    = /(?<=^|[^\/[:word:]])@((#{USERNAME_RE})(?:@[[:word:]\.\-]+[[:word:]]+)?)/i
+  MENTION_RE    = /(?<=^|[^\/[:word:]:])@((#{USERNAME_RE})(?:@[[:word:]\.\-]+[[:word:]]+)?)/i
   URL_PREFIX_RE = /\Ahttp(s?):\/\/[^\/]+/
   USERNAME_ONLY_RE = /\A#{USERNAME_RE}\z/i
 
@@ -532,7 +532,7 @@ class Account < ApplicationRecord
   end
 
   def emojis
-    @emojis ||= CustomEmoji.from_text(emojifiable_text, domain)
+    @emojis ||= CustomEmoji.from_text(emojifiable_text, domain) + profile_emojis
   end
 
   before_create :generate_keys
@@ -594,4 +594,6 @@ class Account < ApplicationRecord
 
     CanonicalEmailBlock.where(reference_account: self).delete_all
   end
+
+  include Friends::ProfileEmoji::AccountExtension
 end
