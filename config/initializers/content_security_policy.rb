@@ -19,6 +19,9 @@ media_host ||= host_to_url(ENV['AZURE_ALIAS_HOST'])
 media_host ||= host_to_url(ENV['S3_HOSTNAME']) if ENV['S3_ENABLED'] == 'true'
 media_host ||= assets_host
 
+instance_ticker_host     = 'https://inst.ance.tk'
+instance_ticker_img_host = 'https://itk.pw'
+
 def sso_host
   return unless ENV['ONE_CLICK_SSO_LOGIN'] == 'true'
   return unless ENV['OMNIAUTH_ONLY'] == 'true'
@@ -42,8 +45,8 @@ Rails.application.config.content_security_policy do |p|
   p.default_src     :none
   p.frame_ancestors :none
   p.font_src        :self, assets_host
-  p.img_src         :self, :https, :data, :blob, assets_host
-  p.style_src       :self, assets_host
+  p.img_src         :self, :https, :data, :blob, assets_host, instance_ticker_img_host
+  p.style_src       :self, assets_host, instance_ticker_host
   p.media_src       :self, :https, :data, assets_host
   p.frame_src       :self, :https
   p.manifest_src    :self, assets_host
