@@ -71,7 +71,7 @@ module Mastodon
     # https://github.com/mastodon/mastodon/pull/24241#discussion_r1162890242
     config.active_support.cache_format_version = 6.1
 
-    config.add_autoload_paths_to_load_path = false
+    #config.add_autoload_paths_to_load_path = false
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
