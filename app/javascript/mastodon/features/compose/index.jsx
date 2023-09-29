@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import spring from 'react-motion/lib/spring';
 
 import { openModal } from 'mastodon/actions/modal';
+import Announcements from './components/announcements';
 import Column from 'mastodon/components/column';
 import { Icon }  from 'mastodon/components/icon';
 import { logOut } from 'mastodon/utils/log_out';
@@ -125,7 +126,8 @@ class Compose extends PureComponent {
               <NavigationContainer onClose={this.onBlur} />
 
               <ComposeFormContainer autoFocus={!isMobile(window.innerWidth)} />
-
+              <Announcements />
+              
               <div className='drawer__inner__mastodon'>
                 <img alt='' draggable='false' src={mascot || elephantUIPlane} />
               </div>
@@ -139,7 +141,7 @@ class Compose extends PureComponent {
               )}
             </Motion>
           </div>
-        </div>
+      </div>
       );
     }
 

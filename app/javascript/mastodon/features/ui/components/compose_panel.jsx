@@ -8,6 +8,7 @@ import ServerBanner from 'mastodon/components/server_banner';
 import ComposeFormContainer from 'mastodon/features/compose/containers/compose_form_container';
 import NavigationContainer from 'mastodon/features/compose/containers/navigation_container';
 import SearchContainer from 'mastodon/features/compose/containers/search_container';
+import Announcements from 'mastodon/features/compose/components/announcements';
 
 import LinkFooter from './link_footer';
 
@@ -59,6 +60,7 @@ class ComposePanel extends PureComponent {
           <>
             <NavigationContainer onClose={this.onBlur} />
             <ComposeFormContainer singleColumn />
+            <Announcements />
           </>
         )}
 
