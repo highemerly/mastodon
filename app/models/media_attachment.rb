@@ -70,7 +70,11 @@ class MediaAttachment < ApplicationRecord
 
   IMAGE_STYLES = {
     original: {
+<<<<<<< HEAD
       pixels: 8_294_400, # 3840x2160px
+=======
+      pixels: 4_147_200, # 2880x1440px
+>>>>>>> e27d571f3 ([Change] 動画・画像のアップロード制限を緩和)
       file_geometry_parser: FastGeometryParser,
     }.freeze,
 
