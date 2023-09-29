@@ -51,6 +51,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:use_blurhash]      = object.current_account.user.setting_use_blurhash
       store[:use_pending_items] = object.current_account.user.setting_use_pending_items
       store[:show_trends]       = Setting.trends && object.current_account.user.setting_trends
+      store[:hidden_direct]     = object.current_account.user.setting_hidden_direct
     else
       store[:auto_play_gif] = Setting.auto_play_gif
       store[:display_media] = Setting.display_media

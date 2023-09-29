@@ -298,6 +298,46 @@ class User < ApplicationRecord
     save!
   end
 
+  def prefers_noindex?
+    setting_noindex
+  end
+
+  def preferred_posting_language
+    valid_locale_cascade(settings.default_language, locale, I18n.locale)
+  end
+
+  def setting_default_privacy
+    settings.default_privacy || (account.locked? ? 'private' : 'public')
+  end
+
+  def allows_report_emails?
+    settings.notification_emails['report']
+  end
+
+  def allows_pending_account_emails?
+    settings.notification_emails['pending_account']
+  end
+
+  def allows_appeal_emails?
+    settings.notification_emails['appeal']
+  end
+
+  def allows_trends_review_emails?
+    settings.notification_emails['trending_tag']
+  end
+
+  def aggregates_reblogs?
+    @aggregates_reblogs ||= settings.aggregate_reblogs
+  end
+
+  def hidden_direct?
+    settings.hidden_direct
+  end
+
+  def shows_application?
+    @shows_application ||= settings.show_application
+  end
+
   def token_for_app(app)
     return nil if app.nil? || app.owner != self
 
