@@ -265,7 +265,7 @@ class Status < ApplicationRecord
     fields  = [spoiler_text, text]
     fields += preloadable_poll.options unless preloadable_poll.nil?
 
-    @emojis = CustomEmoji.from_text(fields.join(' '), account.domain)
+    @emojis = CustomEmoji.from_text(fields.join(' '), account.domain) + profile_emojis
   end
 
   def ordered_media_attachments
@@ -491,4 +491,17 @@ class Status < ApplicationRecord
   def trigger_update_webhooks
     TriggerWebhookWorker.perform_async('status.updated', 'Status', id) if local?
   end
+  
+  def unlink_from_conversations
+    return unless direct_visibility?
+
+    mentioned_accounts = (association(:mentions).loaded? ? mentions : mentions.includes(:account)).map(&:account)
+    inbox_owners       = mentioned_accounts.select(&:local?) + (account.local? ? [account] : [])
+
+    inbox_owners.each do |inbox_owner|
+      AccountConversation.remove_status(inbox_owner, self)
+    end
+  end
+
+  include Friends::ProfileEmoji::StatusExtension
 end

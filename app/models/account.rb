@@ -467,7 +467,7 @@ class Account < ApplicationRecord
   inverse_alias :unlocked, :locked
 
   def emojis
-    @emojis ||= CustomEmoji.from_text(emojifiable_text, domain)
+    @emojis ||= CustomEmoji.from_text(emojifiable_text, domain) + profile_emojis
   end
 
   before_validation :prepare_contents, if: :local?
@@ -535,4 +535,6 @@ class Account < ApplicationRecord
   def trigger_update_webhooks
     TriggerWebhookWorker.perform_async('account.updated', 'Account', id) if local?
   end
+
+  include Friends::ProfileEmoji::AccountExtension
 end

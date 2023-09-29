@@ -68,7 +68,7 @@ class Poll < ApplicationRecord
   end
 
   def emojis
-    @emojis ||= CustomEmoji.from_text(options.join(' '), account.domain)
+    @emojis ||= CustomEmoji.from_text(options.join(' '), account.domain) + profile_emojis
   end
 
   class Option < ActiveModelSerializers::Model
@@ -122,4 +122,6 @@ class Poll < ApplicationRecord
   def show_totals_now?
     expired? || !hide_totals?
   end
+
+  include Friends::ProfileEmoji::PollExtension
 end
