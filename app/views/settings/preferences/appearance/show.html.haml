@@ -13,7 +13,7 @@
 
   .fields-group
     = f.simple_fields_for :settings, current_user.settings do |ff|
-      = ff.input :theme, collection: Themes.instance.names, label_method: ->(theme) { I18n.t("themes.#{theme}", default: theme) }, wrapper: :with_label, label: I18n.t('simple_form.labels.defaults.setting_theme'), include_blank: false, hint: false
+      = ff.input :theme, collection: Themes.instance.names, label_method: ->(theme) { I18n.t("themes.#{theme}", default: theme) }, wrapper: :with_label, label: I18n.t('simple_form.labels.defaults.setting_theme'), include_blank: false, hint: false, handononly: true
 
   - unless I18n.locale == :en
     .flash-message.translation-prompt

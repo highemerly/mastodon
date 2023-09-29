@@ -203,7 +203,7 @@ ja:
         setting_advanced_layout: 上級者向けUIを有効にする
         setting_aggregate_reblogs: ブーストをまとめる
         setting_always_send_emails: 常にメール通知を送信する
-        setting_hidden_direct: '[はんドン独自] DMをホームTLに表示しない'
+        setting_hidden_direct: 'DMをホームTLに表示しない'
         setting_auto_play_gif: アニメーションGIFを自動再生する
         setting_boost_modal: ブーストする前に確認ダイアログを表示する
         setting_default_language: 投稿する言語
@@ -327,6 +327,7 @@ ja:
     not_recommended: 非推奨
     overridden: 上書き済み
     recommended: おすすめ
+    handononly: はんドン独自
     required:
       mark: "*"
       text: 必須
