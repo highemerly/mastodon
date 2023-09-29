@@ -2,23 +2,12 @@
 
 class PublicStatusesIndex < Chewy::Index
   settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: {
-    filter: {
-      english_stop: {
-        type: 'stop',
-        stopwords: '_english_',
-      },
-
-      english_stemmer: {
-        type: 'stemmer',
-        language: 'english',
-      },
-
-      english_possessive_stemmer: {
-        type: 'stemmer',
-        language: 'possessive_english',
+    tokenizer: {
+      kuromoji_user_dict: {
+        type: 'kuromoji_tokenizer',
+        user_dictionary: 'userdic.txt',
       },
     },
-
     analyzer: {
       verbatim: {
         tokenizer: 'uax_url_email',
@@ -26,15 +15,13 @@ class PublicStatusesIndex < Chewy::Index
       },
 
       content: {
-        tokenizer: 'standard',
+        type: 'custom',
+        tokenizer: 'kuromoji_user_dict',
         filter: %w(
-          lowercase
-          asciifolding
+          kuromoji_baseform
+          kuromoji_stemmer
           cjk_width
-          elision
-          english_possessive_stemmer
-          english_stop
-          english_stemmer
+          lowercase
         ),
       },
 
