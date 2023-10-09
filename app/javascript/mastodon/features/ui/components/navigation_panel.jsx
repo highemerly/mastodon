@@ -32,6 +32,7 @@ const messages = defineMessages({
   search: { id: 'navigation_bar.search', defaultMessage: 'Search' },
   advancedInterface: { id: 'navigation_bar.advanced_interface', defaultMessage: 'Open in advanced web interface' },
   openedInClassicInterface: { id: 'navigation_bar.opened_in_classic_interface', defaultMessage: 'Posts, accounts, and other specific pages are opened by default in the classic web interface.' },
+  post: { id: 'compose_form.publish', defaultMessage: 'Toot!' },
 });
 
 class NavigationPanel extends Component {
@@ -108,6 +109,8 @@ class NavigationPanel extends Component {
             <hr />
 
             <ColumnLink transparent href='/settings/preferences' icon='cog' text={intl.formatMessage(messages.preferences)} />
+            <ColumnLink transparent to='/publish' icon='pencil' text={intl.formatMessage(messages.post)} />
+
           </>
         )}
 

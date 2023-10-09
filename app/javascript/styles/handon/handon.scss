@@ -3,10 +3,10 @@
 /**** visibility ****/
 /* Change visibility icon color (Followers-only)  */
 .status .fa-lock:before {
-  color: #fffacd !important ;
+  color: $lock-color !important ;
 }
 .detailed-status .fa-lock:before {
-  color: #fffacd !important ;
+  color: $lock-color !important ;
 }
 /* Change visibility icon color (Direct) */
 .status .fa-envelope::before {
@@ -20,6 +20,104 @@
   display: none !important ;
 }
 /**** misc ****/
+
+/* TL view: contract spaces*/
+.status {
+  padding: 10px 16px 8px 16px !important;
+}
+.status div.status__info {
+  margin-bottom: 6px;
+}
+.status div.status__action-bar {
+  margin-top: 6px;
+}
+.status div.status__prepend {
+  padding-top: 8px;
+}
+
+.status span.display-name__account {
+  font-size: 0.9em;
+}
+
+.status div.status__avatar div.account__avatar {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.status div.status__avatar div.account__avatar-overlay {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.status div.status__avatar div.account__avatar-overlay div.account__avatar-overlay-base div.account__avatar {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.status div.status__avatar div.account__avatar-overlay div.account__avatar-overlay-overlay div.account__avatar {
+  width: 23px !important;
+  height: 23px !important;
+}
+
+.ui__header .ui__header__links div.account__avatar {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+/* Contract side bar */
+@media screen and (max-width: 889px){
+  .columns-area__panels__pane--navigational .columns-area__panels__pane__inner {
+    width: 51px !important;
+  }
+  .columns-area__panels__pane--navigational {
+    width: 51px !important;
+    min-width: 51px !important;
+  }
+  .columns-area__panels__main {
+    width: calc(100% - 51px) !important;
+  }
+}
+
+.columns-area__panels .column-link {
+  padding: 15px 13px;
+}
+
+/* Add post button to side bar */
+//div.ui__header div.ui__header__links a[href="/publish"] {
+//  display: none;
+//}
+
+div.columns-area__panels__pane__inner a.column-link[href="/publish"] {
+  background-color: #595aff;
+  border: 6px;
+  border-radius: 6px;
+  color: $white;
+}
+
+div.columns-area__panels__pane__inner a.column-link.active[href="/publish"] {
+  display: none;
+}
+
+/* Contract top navi bar */
+
+@media screen and (max-width: 1174px) {
+  .ui__header {
+    height: 45px !important;
+  }
+  .tabs-bar__wrapper {
+    //height: 45px !important;
+    top: 45px !important;
+  }
+}
+
+.ui__header .ui__header__links .button {
+  padding: 5px 19px;
+}
+
+.ui__header_ .ui__header__logo {
+  padding: 1px 3px 1px 15px;
+}
+
 /* Change color of display-name who is belong to handon.club */
 .status a[href^="https://handon.club/"] .display-name {
   color: #ff6347 !important ;
