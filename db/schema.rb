@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_09_07_150100) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -811,6 +812,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_07_150100) do
   create_table "preview_cards_statuses", primary_key: ["status_id", "preview_card_id"], force: :cascade do |t|
     t.bigint "preview_card_id", null: false
     t.bigint "status_id", null: false
+  end
+
+  create_table "push_subscription_blocks", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.string "endpoint", null: false
+    t.boolean "enable", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "relays", force: :cascade do |t|
