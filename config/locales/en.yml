@@ -1731,9 +1731,14 @@ en:
   tags:
     does_not_match_previous_name: does not match the previous name
   themes:
-    contrast: Mastodon (High contrast)
-    default: Mastodon (Dark)
-    mastodon-light: Mastodon (Light)
+    vanilla-default: Standard Mastodon (Dark)
+    vanilla-light: Standard Mastodon (Light)
+    vanilla-contrast: Standard Mastodon (High contrast)
+    blacklead: Handon (BlackLead)
+    cantadark: Handon (Canta Dark with 100% screen width)
+    contrast: Handon (High contrast)
+    default: Handon (Dark)
+    mastodon-light: Handon (Light)
   time:
     formats:
       default: "%b %d, %Y, %H:%M"

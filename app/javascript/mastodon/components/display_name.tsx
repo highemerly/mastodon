@@ -82,6 +82,12 @@ export class DisplayName extends React.PureComponent<Props> {
         acct = `${acct}@${localDomain}`;
       }
 
+      let suffixClassName = 'display-name__account';
+
+      if (!acct.includes('@')) {
+        suffixClassName = suffixClassName + ' handon-local-account';
+      }
+
       displayName = (
         <bdi>
           <strong
@@ -92,7 +98,7 @@ export class DisplayName extends React.PureComponent<Props> {
           />
         </bdi>
       );
-      suffix = <span className='display-name__account'>@{acct}</span>;
+      suffix = <span className={suffixClassName}>@{acct}</span>;
     } else {
       displayName = (
         <bdi>
