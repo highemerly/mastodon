@@ -382,6 +382,7 @@ ja:
     not_recommended: 非推奨
     overridden: 上書き済み
     recommended: おすすめ
+    handononly: はんドン独自機能
     required:
       mark: "*"
       text: 必須
