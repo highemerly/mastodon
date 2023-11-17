@@ -12,7 +12,7 @@
       = ff.input :aggregate_reblogs, wrapper: :with_label, recommended: true, label: I18n.t('simple_form.labels.defaults.setting_aggregate_reblogs'), hint: I18n.t('simple_form.hints.defaults.setting_aggregate_reblogs')
 
     .fields-group
-      = ff.input :hidden_direct, wrapper: :with_label, recommended: true, label: I18n.t('simple_form.labels.defaults.setting_hidden_direct'), hint: I18n.t('simple_form.hints.defaults.setting_hidden_direct')
+      = ff.input :hidden_direct, wrapper: :with_label, recommended: true, handononly: true, label: I18n.t('simple_form.labels.defaults.setting_hidden_direct'), hint: I18n.t('simple_form.hints.defaults.setting_hidden_direct')
 
     %h4= t 'preferences.posting_defaults'
 
