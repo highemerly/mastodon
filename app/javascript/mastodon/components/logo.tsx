@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import logo from '@/images/logo.svg';
 
 export const WordmarkLogo: React.FC = () => (
-  <svg viewBox='0 0 261 66' className='logo logo--wordmark' role='img'>
-    <title>Mastodon</title>
+  <svg viewBox='0 0 2500 617' className='logo logo--wordmark' role='img'>
+    <title>handon.club</title>
     <use xlinkHref='#logo-symbol-wordmark' />
   </svg>
 );
