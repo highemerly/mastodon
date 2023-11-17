@@ -140,7 +140,8 @@ code {
 
       .overridden,
       .recommended,
-      .not_recommended {
+      .not_recommended,
+      .handononly {
         position: absolute;
         margin: 0 4px;
         margin-top: -2px;
