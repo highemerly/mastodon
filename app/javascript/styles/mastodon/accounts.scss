@@ -195,7 +195,8 @@
 .information-badge,
 .simple_form .overridden,
 .simple_form .recommended,
-.simple_form .not_recommended {
+.simple_form .not_recommended,
+.simple_form .handononly {
   display: inline-block;
   padding: 4px 6px;
   cursor: default;
@@ -212,6 +213,7 @@
 .information-badge,
 .simple_form .overridden,
 .simple_form .recommended,
+.simple_form .handononly,
 .simple_form .not_recommended {
   background-color: var(--color-bg-secondary);
   border: 1px solid var(--color-border-primary);
