@@ -58,6 +58,7 @@ class FeedManager
   # @param [Boolean] update
   # @return [Boolean]
   def push_to_home(account, status, update: false)
+    return false if (status.direct_visibility? || status.limited_visibility?) && account.user&.hidden_direct?
     return false unless add_to_feed(:home, account.id, status, aggregate_reblogs: account.user&.aggregates_reblogs?)
 
     trim(:home, account.id)
@@ -256,9 +257,11 @@ class FeedManager
   def populate_home(account)
     limit        = FeedManager::MAX_ITEMS / 2
     aggregate    = account.user&.aggregates_reblogs?
+    need_direct = !(account.user&.hidden_direct?)
     timeline_key = key(:home, account.id)
 
-    account.statuses.limit(limit).each do |status|
+    tmp_timeline = need_direct ? account.statuses : account.statuses.where.not(visibility: [:limited, :direct])
+    tmp_timeline.limit(limit).each do |status|
       add_to_feed(:home, account.id, status, aggregate_reblogs: aggregate)
     end
 
