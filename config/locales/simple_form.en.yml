@@ -395,6 +395,7 @@ en:
     not_recommended: Not recommended
     overridden: Overridden
     recommended: Recommended
+    handononly: Handon only
     required:
       mark: "*"
       text: required
