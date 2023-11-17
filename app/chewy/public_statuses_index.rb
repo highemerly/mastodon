@@ -2,6 +2,13 @@
 
 class PublicStatusesIndex < Chewy::Index
   settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: {
+    tokenizer: {
+      kuromoji_user_dict: {
+        type: 'kuromoji_tokenizer',
+        user_dictionary: 'userdic.txt',
+      },
+    },
+
     filter: {
       english_stop: {
         type: 'stop',
@@ -26,15 +33,18 @@ class PublicStatusesIndex < Chewy::Index
       },
 
       content: {
-        tokenizer: 'standard',
+        tokenizer: 'kuromoji_user_dict',
         filter: %w(
-          lowercase
-          asciifolding
-          cjk_width
-          elision
-          english_possessive_stemmer
+          kuromoji_baseform
+          kuromoji_stemmer
+          kuromoji_part_of_speech
+          ja_stop
+          kuromoji_number
           english_stop
           english_stemmer
+          english_possessive_stemmer
+          cjk_width
+          lowercase
         ),
       },
 
@@ -58,7 +68,7 @@ class PublicStatusesIndex < Chewy::Index
   root date_detection: false do
     field(:id, type: 'long')
     field(:account_id, type: 'long')
-    field(:text, type: 'text', analyzer: 'verbatim', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'content') }
+    field(:text, type: 'text', analyzer: 'content', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'content') }
     field(:tags, type: 'text', analyzer: 'hashtag', value: ->(status) { status.tags.map(&:display_name) })
     field(:language, type: 'keyword')
     field(:properties, type: 'keyword', value: ->(status) { status.searchable_properties })
