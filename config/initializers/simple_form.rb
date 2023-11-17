@@ -21,6 +21,17 @@ module RecommendedComponent
   end
 end
 
+module HandonOnlyComponent
+  def handononly(wrapper_options = nil)
+    return unless options[:handononly]
+
+    key = options[:handononly].is_a?(Symbol) ? options[:handononly] : :handononly
+    options[:label_text] = ->(raw_label_text, _required_label_text, _label_present) { safe_join([raw_label_text, ' ', content_tag(:span, I18n.t(key, scope: 'simple_form'), class: key)]) }
+
+    nil
+  end
+end
+
 module WarningHintComponent
   def warning_hint(_wrapper_options = nil)
     @warning_hint ||= begin
@@ -31,6 +42,7 @@ end
 
 SimpleForm.include_component(AppendComponent)
 SimpleForm.include_component(RecommendedComponent)
+SimpleForm.include_component(HandonOnlyComponent)
 SimpleForm.include_component(WarningHintComponent)
 
 SimpleForm.setup do |config|
@@ -89,6 +101,7 @@ SimpleForm.setup do |config|
 
     b.wrapper tag: :div, class: :label_input do |ba|
       ba.optional :recommended
+      ba.optional :handononly
       ba.use :label
 
       ba.wrapper tag: :div, class: :label_input__wrapper do |bb|
