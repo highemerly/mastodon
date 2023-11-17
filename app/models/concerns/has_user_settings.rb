@@ -123,6 +123,10 @@ module HasUserSettings
     settings['aggregate_reblogs']
   end
 
+  def hidden_direct?
+    settings['hidden_direct']
+  end
+
   def shows_application?
     settings['show_application']
   end
