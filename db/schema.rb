@@ -813,6 +813,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_07_150100) do
     t.bigint "status_id", null: false
   end
 
+  create_table "push_subscription_blocks", force: :cascade do |t|
+    t.string "name", default: "", null: false
+    t.string "endpoint", null: false
+    t.boolean "enable", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "relays", force: :cascade do |t|
     t.string "inbox_url", default: "", null: false
     t.string "follow_activity_id"
