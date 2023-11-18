@@ -1,0 +1,8 @@
+.drawer__inner__mastodon > img {
+  display: none;
+}
+
+div.columns-area__panels__pane__inner a.column-link[href='/publish'] {
+  display: none;
+  width: 0;
+}
