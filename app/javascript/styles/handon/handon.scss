@@ -41,10 +41,131 @@ div.columns-area__panels__pane__inner a.column-link[href='/publish'] {
   border: 6px;
   border-radius: 6px;
   color: $white;
+  padding: 15px 11px;
 }
 
 div.columns-area__panels__pane__inner a.column-link.active[href='/publish'] {
   display: none;
+}
+
+/* Compress whitespace of top navi bar */
+@media screen and (width <= 1174px) {
+  .ui__header {
+    height: 45px !important;
+  }
+
+  .tabs-bar__wrapper {
+    top: 45px !important;
+  }
+}
+
+.ui__header .ui__header__links .button {
+  padding: 5px 19px;
+}
+
+.ui__header_ .ui__header__logo {
+  padding: 1px 3px 1px 15px;
+}
+
+/* Compress whitespace of side bar */
+@media screen and (width <= 889px) {
+  .columns-area__panels__pane--navigational .columns-area__panels__pane__inner {
+    width: 46px !important;
+  }
+
+  .columns-area__panels__pane--navigational {
+    width: 46px !important;
+    min-width: 46px !important;
+  }
+
+  .columns-area__panels__main {
+    width: calc(100% - 46px) !important;
+  }
+}
+
+.columns-area__panels .column-link {
+  padding: 15px 7px;
+}
+
+/* Compress whitespace of timeline view */
+.status {
+  padding: 10px 10px 6px 12px !important;
+}
+
+.status div.status__info {
+  margin-bottom: 6px;
+  padding-bottom: 0;
+}
+
+.status div.status__action-bar {
+  margin-top: 6px;
+}
+
+.status__wrapper div.status__prepend,
+.notification div.notification__message {
+  padding-top: 12px;
+}
+
+.status span.display-name__account {
+  font-size: 0.9em;
+}
+
+.status div.status__avatar div.account__avatar {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.status div.status__avatar div.account__avatar-overlay {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.status
+  div.status__avatar
+  div.account__avatar-overlay
+  div.account__avatar-overlay-base
+  div.account__avatar {
+  width: 35px !important;
+  height: 35px !important;
+}
+
+.status
+  div.status__avatar
+  div.account__avatar-overlay
+  div.account__avatar-overlay-overlay
+  div.account__avatar {
+  width: 23px !important;
+  height: 23px !important;
+}
+
+.ui__header .ui__header__links div.account__avatar {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.status-card {
+  margin-top: 8px;
+}
+
+.status-card__content {
+  padding: 8px;
+}
+
+.status-card__image {
+  width: 80px !important;
+}
+
+.status-card__title {
+  font-size: 14px !important;
+}
+
+.status-card__host {
+  margin-bottom: 0 !important;
+}
+
+.status-card__description {
+  margin-top: 4px !important;
+  font-size: 12px !important;
 }
 
 /**** misc ****/
