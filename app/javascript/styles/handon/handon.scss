@@ -1,0 +1,30 @@
+/**** visibility ****/
+/* Change visibility icon color (Followers-only)  */
+.status .fa-lock:before {
+  color: $lock-color !important ;
+}
+.detailed-status .fa-lock:before {
+  color: $lock-color !important ;
+}
+/* Change visibility icon color (Direct) */
+.status .fa-at::before {
+  color: $at-color !important ;
+}
+.detailed-status .fa-at::before {
+  color: $at-color !important ;
+}
+/* Disable visibility icon when it is public */
+.status-public .fa-globe:before {
+  display: none !important ;
+}
+
+/**** misc ****/
+/* Change color of display-name who is belong to handon.club */
+.status .handon-local-account {
+  color: #ff6347 !important ;
+}
+
+/* Enlarge custom emojis */
+p > .emojione[alt^=":"]:active {
+  width: 7em; height: 7em; margin: 0;
+}
