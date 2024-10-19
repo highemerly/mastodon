@@ -5,6 +5,10 @@ require 'active_support/core_ext/integer/time'
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Add by highemerly
+  config.hosts << "cdn-web1-tk-vu.handon.club"
+  config.hosts << "cdn-web2-tk-vu.handon.club"
+
   # Code is not reloaded between requests.
   config.enable_reloading = false
 
