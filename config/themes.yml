@@ -1,3 +1,8 @@
-default: styles/application.scss
-contrast: styles/contrast.scss
-mastodon-light: styles/mastodon-light.scss
+default: styles/handon.scss
+contrast: styles/handon-contrast.scss
+mastodon-light: styles/handon-light.scss
+blacklead: styles/handon-blacklead.scss
+cantadark: styles/handon-cantadark.scss
+vanilla-default: styles/application.scss
+vanilla-contrast: styles/contrast.scss
+vanilla-light: styles/mastodon-light.scss
