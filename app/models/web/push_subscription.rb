@@ -33,7 +33,7 @@ class Web::PushSubscription < ApplicationRecord
   generates_token_for :unsubscribe, expires_in: Web::PushNotificationWorker::TTL
 
   def pushable?(notification)
-    policy_allows_notification?(notification) && alert_enabled_for_notification_type?(notification)
+    policy_allows_notification?(notification) && alert_enabled_for_notification_type?(notification) && PushSubscriptionBlock.allow?(endpoint)
   end
 
   def associated_access_token
