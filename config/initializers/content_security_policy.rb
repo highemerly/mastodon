@@ -12,6 +12,11 @@ policy = ContentSecurityPolicy.new
 assets_host = policy.assets_host
 media_hosts = policy.media_hosts
 
+# For CloudFlare insights
+cloudflare_insights_script_host  = 'https://static.cloudflareinsights.com'
+cloudflare_insights_connect_host = 'https://cloudflareinsights.com'
+cloudflare_mirage_script_host    = 'https://ajax.cloudflare.com'
+
 Rails.application.config.content_security_policy do |p|
   p.base_uri        :none
   p.default_src     :none
@@ -34,13 +39,13 @@ Rails.application.config.content_security_policy do |p|
     vite_public_host = ENV.fetch('VITE_DEV_SERVER_PUBLIC', "localhost:#{ViteRuby.config.port}")
     front_end_build_urls = %w(ws http).map { |protocol| "#{protocol}#{'s' if ViteRuby.config.https}://#{vite_public_host}" }
 
-    p.connect_src :self, :data, :blob, *media_hosts, Rails.configuration.x.streaming_api_base_url, *front_end_build_urls
+    p.connect_src :self, :data, :blob, *media_hosts, Rails.configuration.x.streaming_api_base_url, cloudflare_insights_connect_host, *front_end_build_urls
     p.script_src  :self, :unsafe_inline, :unsafe_eval, assets_host
     p.frame_src   :self, :https, :http
     p.style_src   :self, assets_host, :unsafe_inline
   else
     p.connect_src :self, :data, :blob, *media_hosts, Rails.configuration.x.streaming_api_base_url
-    p.script_src  :self, assets_host, "'wasm-unsafe-eval'"
+    p.script_src  :self, assets_host, cloudflare_insights_script_host, cloudflare_mirage_script_host, "'wasm-unsafe-eval'"
     p.frame_src   :self, :https
     p.style_src   :self, assets_host
   end
