@@ -30,7 +30,7 @@ class Web::PushSubscription < ApplicationRecord
   delegate :locale, to: :associated_user
 
   def pushable?(notification)
-    policy_allows_notification?(notification) && alert_enabled_for_notification_type?(notification)
+    policy_allows_notification?(notification) && alert_enabled_for_notification_type?(notification) && PushSubscriptionBlock.allow?(endpoint)
   end
 
   def associated_user
