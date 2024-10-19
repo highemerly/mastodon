@@ -162,6 +162,13 @@ namespace :admin do
     end
   end
 
+  resources :push_subscription_blocks, except: [:show] do
+    member do
+      post :enable
+      post :disable
+    end
+  end
+
   resources :roles, except: [:show]
   resources :account_moderation_notes, only: [:create, :destroy]
   resource :follow_recommendations, only: [:show, :update]
