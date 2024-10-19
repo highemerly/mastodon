@@ -139,9 +139,13 @@ export const PollForm = () => {
 
       <div className='compose-form__poll__footer'>
         <Select label={intl.formatMessage(messages.duration)} options={[
+          { value: 60, label: intl.formatMessage(messages.minutes, { number: 1 })},
           { value: 300, label: intl.formatMessage(messages.minutes, { number: 5 })},
+          { value: 600, label: intl.formatMessage(messages.minutes, { number: 10 })},
           { value: 1800, label: intl.formatMessage(messages.minutes, { number: 30 })},
           { value: 3600, label: intl.formatMessage(messages.hours, { number: 1 })},
+          { value: 7200, label: intl.formatMessage(messages.hours, { number: 2 })},
+          { value: 10800, label: intl.formatMessage(messages.hours, { number: 3 })},
           { value: 21600, label: intl.formatMessage(messages.hours, { number: 6 })},
           { value: 43200, label: intl.formatMessage(messages.hours, { number: 12 })},
           { value: 86400, label: intl.formatMessage(messages.days, { number: 1 })},
