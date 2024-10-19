@@ -1939,10 +1939,15 @@ en:
     review_link: Review terms of service
     title: The terms of service of %{domain} are changing
   themes:
-    contrast: Mastodon (High contrast)
-    default: Mastodon (Dark)
-    mastodon-light: Mastodon (Light)
     system: Automatic (use system theme)
+    vanilla-default: Standard Mastodon (Dark)
+    vanilla-light: Standard Mastodon (Light)
+    vanilla-contrast: Standard Mastodon (High contrast)
+    blacklead: Handon (BlackLead)
+    cantadark: Handon (Canta Dark with 100% screen width)
+    contrast: Handon (High contrast)
+    default: Handon (Dark)
+    mastodon-light: Handon (Light)
   time:
     formats:
       default: "%b %d, %Y, %H:%M"
