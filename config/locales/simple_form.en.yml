@@ -308,6 +308,9 @@ en:
           none: Never notify of updates (not recommended)
           patch: Notify on bugfix updates
         trending_tag: New trend requires review
+      push_subscription_blocks:
+        endpoint: End point
+        name: Name
       rule:
         hint: Additional information
         text: Rule

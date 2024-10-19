@@ -57,6 +57,21 @@
     }
   }
 
+  th.nowrap,
+  td.nowrap {
+    white-space: nowrap;
+  }
+
+  th.wrap,
+  td.wrap {
+    overflow-wrap: anywhere;
+  }
+
+  th.symbol,
+  td.symbol {
+    text-align: center;
+  }
+
   &.inline-table {
     & > tbody > tr:nth-child(odd) {
       & > td,
