@@ -67,6 +67,8 @@ module Mastodon
     # TODO: We should enable this eventually, but for now there are many things
     # in the wrong path from the perspective of zeitwerk.
 
+    #config.add_autoload_paths_to_load_path = false
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
