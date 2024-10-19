@@ -187,6 +187,13 @@ namespace :admin do
 
   resources :ip_blocks, only: [:index, :new, :create], concerns: :batch
 
+  resources :push_subscription_blocks, except: [:show] do
+    member do
+      post :enable
+      post :disable
+    end
+  end
+
   resources :roles, except: [:show]
   resources :account_moderation_notes, only: [:create, :destroy]
   resource :follow_recommendations, only: [:show, :update]
