@@ -1762,10 +1762,15 @@ ja:
   tags:
     does_not_match_previous_name: 以前の名前と一致しません
   themes:
-    contrast: Mastodon (ハイコントラスト)
-    default: Mastodon (ダーク)
-    mastodon-light: Mastodon (ライト)
     system: 自動 (システムのテーマを使用)
+    vanilla-default: Mastodon標準（ダーク）
+    vanilla-light: Mastodon標準（ライト）
+    vanilla-contrast: Mastodon標準（ハイコントラスト）
+    blacklead: Handon (BlackLead)
+    cantadark: Handon (100%幅/CantaDark)
+    contrast: Handon (ハイコントラスト)
+    default: Handon (ダーク)
+    mastodon-light: Handon (ライト)
   time:
     formats:
       default: "%Y年%m月%d日 %H:%M"
