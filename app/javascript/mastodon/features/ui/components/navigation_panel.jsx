@@ -55,6 +55,7 @@ const messages = defineMessages({
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   administration: { id: 'navigation_bar.administration', defaultMessage: 'Administration' },
   moderation: { id: 'navigation_bar.moderation', defaultMessage: 'Moderation' },
+  publish: { id: 'compose_form.publish', defaultMessage: 'Toot!' },
   followsAndFollowers: { id: 'navigation_bar.follows_and_followers', defaultMessage: 'Follows and followers' },
   about: { id: 'navigation_bar.about', defaultMessage: 'About' },
   search: { id: 'navigation_bar.search', defaultMessage: 'Search' },
@@ -192,6 +193,14 @@ class NavigationPanel extends Component {
             <hr />
             <ColumnLink transparent to='/about' icon='ellipsis-h' iconComponent={MoreHorizIcon} text={intl.formatMessage(messages.about)} />
           </div>
+        )}
+
+        {signedIn && (
+          <>
+            <ColumnLink transparent to='/publish' icon='pencil' text={intl.formatMessage(messages.publish)} />
+          </>
+        )}
+
         </div>
 
         <div className='flex-spacer' />
