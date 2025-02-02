@@ -11,6 +11,7 @@ class MoveUserSettings < ActiveRecord::Migration[6.1]
     default_language: 'default_language',
     noindex: 'noindex',
     theme: 'theme',
+    hidden_direct: 'hidden_direct',
     trends: 'web.trends',
     unfollow_modal: 'web.unfollow_modal',
     boost_modal: 'web.reblog_modal',
