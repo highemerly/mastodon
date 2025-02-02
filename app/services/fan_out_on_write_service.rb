@@ -39,8 +39,6 @@ class FanOutOnWriteService < BaseService
   end
 
   def fan_out_to_local_recipients!
-    deliver_to_self!
-
     unless @options[:skip_notifications]
       notify_quoted_account!
       notify_mentioned_accounts!
@@ -49,11 +47,18 @@ class FanOutOnWriteService < BaseService
 
     case @status.visibility.to_sym
     when :public, :unlisted, :private
+      deliver_to_self!
       deliver_to_all_followers!
       deliver_to_lists!
     when :limited
+      deliver_to_self! unless @account.user&.hidden_direct?
       deliver_to_mentioned_followers!
+    when :direct
+      deliver_to_self! unless @account.user&.hidden_direct?
+      deliver_to_mentioned_followers!
+      deliver_to_conversation!
     else
+      deliver_to_self!
       deliver_to_mentioned_followers!
       deliver_to_conversation!
     end
