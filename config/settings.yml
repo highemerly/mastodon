@@ -21,6 +21,7 @@ defaults: &defaults
   noindex: false
   theme: 'default'
   thumbnail_description: ''
+  hidden_direct: true
   trends: true
   trendable_by_default: false
   disallowed_hashtags: # space separated string or list of hashtags without the hash
