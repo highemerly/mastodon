@@ -20,6 +20,7 @@ defaults: &defaults
   preview_sensitive_media: false
   noindex: false
   theme: 'system'
+  hidden_direct: true
   trends: true
   trendable_by_default: false
   disallowed_hashtags: # space separated string or list of hashtags without the hash
