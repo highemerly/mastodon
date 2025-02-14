@@ -28,6 +28,7 @@ import SearchIcon from '@/material-icons/400-24px/search.svg?react';
 import SettingsIcon from '@/material-icons/400-24px/settings.svg?react';
 import StarActiveIcon from '@/material-icons/400-24px/star-fill.svg?react';
 import StarIcon from '@/material-icons/400-24px/star.svg?react';
+import EditIcon from '@/material-icons/400-24px/edit.svg?react';
 import { fetchFollowRequests } from 'mastodon/actions/accounts';
 import { IconWithBadge } from 'mastodon/components/icon_with_badge';
 import { WordmarkLogo } from 'mastodon/components/logo';
@@ -193,11 +194,10 @@ class NavigationPanel extends Component {
             <hr />
             <ColumnLink transparent to='/about' icon='ellipsis-h' iconComponent={MoreHorizIcon} text={intl.formatMessage(messages.about)} />
           </div>
-        )}
 
         {signedIn && (
           <>
-            <ColumnLink transparent to='/publish' icon='pencil' text={intl.formatMessage(messages.publish)} />
+            <ColumnLink transparent to='/publish' icon='pencil' iconComponent={EditIcon} text={intl.formatMessage(messages.publish)} />
           </>
         )}
 
