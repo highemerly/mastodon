@@ -1,39 +1,82 @@
-/**** visibility ****/
+/**** 4.3 ****/
 
-/* Change visibility icon color (Followers-only)  */
-.status .fa-lock::before {
-  color: $lock-color !important ;
+/* Timeline padding */
+.column .status__wrapper .status {
+  padding-top: 12px !important;
+  padding-bottom: 8px !important;
+  padding-right: 14px !important;
+  padding-left: 14px !important;
 }
 
-.detailed-status .fa-lock::before {
-  color: $lock-color !important ;
+.column .status__wrapper .status__action-bar {
+  margin-top: 6px;
 }
 
-/* Change visibility icon color (Direct) */
-.status .fa-at::before {
-  color: $at-color !important ;
+.column .status__wrapper .status__prepend {
+  padding-top: 12px !important;
 }
 
-.detailed-status .fa-at::before {
-  color: $at-color !important ;
+/* Notification padding */
+.column .item-list .notification-ungrouped {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  padding-top: 10px !important;
+  padding-bottom: 5px !important;
 }
 
-/* Disable visibility icon when it is public */
-.status-public .fa-globe::before {
-  display: none !important ;
+.column .item-list .notification-ungrouped__header {
+  padding-left: 12px !important;
+  margin-bottom: 2px !important;
+}
+
+.column .item-list .notification-group {
+  padding-left: 10px !important;
+  padding-right: 16px !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+
+.column .item-list .notification-ungrouped .notification-ungrouped__header {
+  margin-bottom: 4px !important;
 }
 
 /* (Misskey compatibility) consider visibility of ultra-wide custom emojis */
-.reply-indicator__content .status__content__text,
-.status__content .status__content__text .emojione {
+.column .status__wrapper .status .emojione {
+  width: auto !important;
+}
+.column .detailed-status__wrapper .detailed-status .emojione {
   width: auto !important;
 }
 
-.detailed-status .status__content .emojione {
-  width: auto !important;
+/* (Visibility icon) remove public icon*/
+.status-public .icon-globe {
+  display: none !important ;
 }
 
-/**** compatibility 4.0 or before ****/
+/* (Visibility icon) emphasize followers-only */
+.status-private .icon-lock {
+  color: $lock-color !important ;
+}
+
+/* (Visibility icon) emphasize direct */
+.status-direct .icon-at {
+  color: $at-color !important ;
+}
+
+/* Change color of display-name who is belong to handon.club */
+.status .handon-local-account {
+  color: #ff6347 !important ;
+}
+
+/* Enlarge custom emojis */
+p > .emojione[alt^=':']:active {
+  width: 7em;
+  height: 7em;
+  margin: 0;
+}
+
+
+/**** sidevar ***/
 
 /* Add post button to side bar */
 div.columns-area__panels__pane__inner a.column-link[href='/publish'] {
@@ -87,24 +130,6 @@ div.columns-area__panels__pane__inner a.column-link.active[href='/publish'] {
   padding: 15px 7px;
 }
 
-/* Compress whitespace of timeline view */
-.status {
-  padding: 10px 10px 6px 12px !important;
-}
-
-.status div.status__info {
-  margin-bottom: 6px;
-  padding-bottom: 0;
-}
-
-.status div.status__action-bar {
-  margin-top: 6px;
-}
-
-.status__wrapper div.status__prepend,
-.notification div.notification__message {
-  padding-top: 12px;
-}
 
 .status span.display-name__account {
   font-size: 0.9em;
@@ -166,18 +191,4 @@ div.columns-area__panels__pane__inner a.column-link.active[href='/publish'] {
 .status-card__description {
   margin-top: 4px !important;
   font-size: 12px !important;
-}
-
-/**** misc ****/
-
-/* Change color of display-name who is belong to handon.club */
-.status .handon-local-account {
-  color: #ff6347 !important ;
-}
-
-/* Enlarge custom emojis */
-p > .emojione[alt^=':']:active {
-  width: 7em;
-  height: 7em;
-  margin: 0;
 }
