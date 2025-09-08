@@ -1,4 +1,7 @@
-@import 'application';
-@import 'handon/blacklead/variables';
-@import 'handon/handon';
-@import 'mods/blacklead';
+@use 'application';
+@use 'handon/blacklead/variables' as theme;
+@use 'handon/handon' with (
+    $lock-color: theme.$lock-color,
+    $at-color: theme.$at-color,
+);
+@use 'mods/blacklead';
