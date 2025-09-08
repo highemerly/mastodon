@@ -1,3 +1,6 @@
-@import 'handon/default/variables';
-@import 'application';
-@import 'handon/handon';
+@use 'handon/default/variables' as theme;
+@use 'application';
+@use 'handon/handon' with (
+    $lock-color: theme.$lock-color,
+    $at-color: theme.$at-color,
+);
