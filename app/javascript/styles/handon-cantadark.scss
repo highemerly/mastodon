@@ -1,4 +1,7 @@
-@import 'application';
-@import 'handon/cantadark/variables';
-@import 'handon/handon';
-@import 'mods/cantadark';
+@use 'application';
+@use 'handon/cantadark/variables' as theme;
+@use 'handon/handon' with (
+    $lock-color: theme.$lock-color,
+    $at-color: theme.$at-color,
+);
+@use 'mods/cantadark';
