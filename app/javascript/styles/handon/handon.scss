@@ -4,18 +4,118 @@ $post-button-color: white !default;
 
 /* Timeline padding */
 .column .status__wrapper .status {
-  padding-top: 12px !important;
+  padding-top: 8px !important;
   padding-bottom: 8px !important;
-  padding-right: 14px !important;
-  padding-left: 14px !important;
+  padding-right: 12px !important;
+  padding-left: 12px !important;
 }
 
 .column .status__wrapper .status__action-bar {
-  margin-top: 6px;
+  margin-top: 8px;
+  height: 22px;
 }
 
 .column .status__wrapper .status__prepend {
-  padding-top: 12px !important;
+  padding-top: 6px !important;
+}
+
+.column-header__title {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.column-header__back-button {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+/* spaces of status_prepend at timeline */
+
+.status__prepend {
+  font-size: 13px !important;
+}
+
+/* spaces of status_info at timeline */
+.status .status__content .status__content__text {
+  font-size: 14px;
+}
+
+.status .status__info {
+  padding-bottom: 8px !important;
+}
+
+.status .status__info .status__display-name {
+  line-height: 18px !important;
+}
+
+.status .status__info .status__display-name .display-name__html {
+  font-size: 0.9em;
+}
+.status .status__info .status__display-name .display-name__account {
+  font-size: 0.85em;
+}
+
+.status .status__info .status__avatar .account__avatar {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+.status .status__info .status__relative-time {
+  height: 36px !important;
+  font-size: 0.85em;
+}
+
+/* spaces of status_info at timeline (reblog) */
+
+.status
+  div.status__avatar
+  div.account__avatar-overlay
+  div.account__avatar-overlay-base
+  div.account__avatar {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.status
+  div.status__avatar
+  div.account__avatar-overlay
+  div.account__avatar-overlay-overlay
+  div.account__avatar {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+/* spaces of link card */
+.status-card {
+  margin-top: 8px;
+}
+
+.status-card__content {
+  padding: 8px;
+}
+
+.status-card__image {
+  width: 65px !important;
+}
+
+.status-card__title {
+  font-size: 12px !important;
+}
+
+.status-card__host {
+  margin-bottom: 0 !important;
+  font-size: 12px !important;
+}
+
+.status-card__description {
+  margin-top: 4px !important;
+  font-size: 12px !important;
+}
+
+/* Media */
+.media-gallery {
+  margin-top: 6px !important;
+  margin-bottom: 2px !important;
 }
 
 /* Notification padding */
@@ -75,63 +175,4 @@ p > .emojione[alt^=':']:active {
   width: 8em;
   height: 8em;
   margin: 0;
-}
-
-/* spaces of status at timeline */
-.status span.display-name__account {
-  font-size: 0.9em;
-}
-
-.status div.status__avatar div.account__avatar {
-  width: 40px !important;
-  height: 40px !important;
-}
-
-.status div.status__avatar div.account__avatar-overlay {
-  width: 40px !important;
-  height: 40px !important;
-}
-
-.status
-  div.status__avatar
-  div.account__avatar-overlay
-  div.account__avatar-overlay-base
-  div.account__avatar {
-  width: 35px !important;
-  height: 35px !important;
-}
-
-.status
-  div.status__avatar
-  div.account__avatar-overlay
-  div.account__avatar-overlay-overlay
-  div.account__avatar {
-  width: 23px !important;
-  height: 23px !important;
-}
-
-/* spaces of link card */
-.status-card {
-  margin-top: 8px;
-}
-
-.status-card__content {
-  padding: 8px;
-}
-
-.status-card__image {
-  width: 80px !important;
-}
-
-.status-card__title {
-  font-size: 14px !important;
-}
-
-.status-card__host {
-  margin-bottom: 0 !important;
-}
-
-.status-card__description {
-  margin-top: 4px !important;
-  font-size: 12px !important;
 }
