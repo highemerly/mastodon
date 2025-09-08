@@ -1,5 +1,9 @@
 /**** 4.3 ****/
 
+$lock-color: white !default;
+$at-color: yellow !default;
+$post-button-color: white !default;
+
 /* Timeline padding */
 .column .status__wrapper .status {
   padding-top: 12px !important;
@@ -83,7 +87,7 @@ div.columns-area__panels__pane__inner a.column-link[href='/publish'] {
   background-color: #595aff;
   border: 6px;
   border-radius: 6px;
-  color: $white;
+  color: $post-button-color;
   padding: 15px 11px;
 }
 
