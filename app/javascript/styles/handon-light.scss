@@ -1,5 +1,8 @@
-@import 'mastodon-light/variables';
-@import 'application';
-@import 'mastodon-light/diff';
-@import 'handon/light/variables';
-@import 'handon/handon';
+@use 'mastodon-light/variables' as *;
+@use 'application';
+@use 'mastodon-light/diff';
+@use 'handon/light/variables' as theme;
+@use 'handon/handon' with (
+    $lock-color: theme.$lock-color,
+    $at-color: theme.$at-color,
+);
