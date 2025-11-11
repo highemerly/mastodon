@@ -22,7 +22,7 @@ export const DisplayNameDefault: FC<
   }, [account, localDomain]);
 
   let classname = 'display-name__account'
-  if localDomain {
+  if (localDomain) {
     classname = 'display-name__account handon-local-account'
   }
 
