@@ -28,6 +28,11 @@ export const DisplayNameDefault: FC<
 > = ({ account, localDomain, className, ...props }) => {
   const username = useAccountHandle(account, localDomain);
 
+  let classname = 'display-name__account'
+  if (localDomain) {
+    classname = 'display-name__account handon-local-account'
+  }
+
   return (
     <DisplayNameWithoutDomain
       account={account}
@@ -35,7 +40,7 @@ export const DisplayNameDefault: FC<
       {...props}
     >
       {' '}
-      <span className='display-name__account'>
+      <span className={classname}>
         {username ?? <Skeleton width='7ch' />}
       </span>
     </DisplayNameWithoutDomain>
