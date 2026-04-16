@@ -1,0 +1,310 @@
+name: Check Upstream and Rebase
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # 6時間ごと
+  workflow_dispatch:
+
+jobs:
+  check-and-rebase:
+    runs-on: ubuntu-latest
+    outputs:
+      new_tag: ${{ steps.check.outputs.new_tag }}
+      current_tag: ${{ steps.check.outputs.current_tag }}
+      ci_tag: ${{ steps.prepare.outputs.ci_tag }}
+      docker_tag: ${{ steps.prepare.outputs.docker_tag }}
+      should_build: ${{ steps.check.outputs.should_build }}
+      rebase_success: ${{ steps.rebase.outputs.rebase_success }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Check upstream for new tags
+        id: check
+        run: |
+          UPSTREAM_REPO=mastodon/mastodon
+
+          # 自リポジトリの最新タグを取得 (actions-* や upstream-* を除外)
+          CURRENT_TAG=$(git tag --sort=-v:refname | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          echo "Current tag: $CURRENT_TAG"
+
+          # バージョン番号をパース (v4.3.2 -> 4 3 2)
+          CURRENT_CLEAN=${CURRENT_TAG#v}
+          IFS='.' read -r CUR_MAJOR CUR_MINOR CUR_PATCH <<< "$CURRENT_CLEAN"
+
+          # upstreamの最新タグ一覧を取得し、semver順にソート
+          UPSTREAM_TAGS=$(gh api repos/$UPSTREAM_REPO/tags --paginate \
+            --jq '.[].name' \
+            | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -Vr \
+            | head -20)
+
+          echo "Upstream tags (sorted):"
+          echo "$UPSTREAM_TAGS"
+
+          # 対象となるタグをフィルタ（現在より新しいもの）
+          TARGET_TAG=""
+          while IFS= read -r TAG; do
+            CLEAN=${TAG#v}
+            IFS='.' read -r UP_MAJOR UP_MINOR UP_PATCH <<< "$CLEAN"
+
+            IS_NEWER=false
+            if [ "$UP_MAJOR" -gt "$CUR_MAJOR" ]; then
+              IS_NEWER=true
+            elif [ "$UP_MAJOR" -eq "$CUR_MAJOR" ] && [ "$UP_MINOR" -gt "$CUR_MINOR" ]; then
+              IS_NEWER=true
+            elif [ "$UP_MAJOR" -eq "$CUR_MAJOR" ] && [ "$UP_MINOR" -eq "$CUR_MINOR" ] && [ "$UP_PATCH" -gt "$CUR_PATCH" ]; then
+              IS_NEWER=true
+            fi
+
+            if [ "$IS_NEWER" = "true" ]; then
+              TARGET_TAG=$TAG
+              break  # 最新1件のみ処理（複数あれば次回以降に処理）
+            fi
+          done <<< "$UPSTREAM_TAGS"
+
+          if [ -z "$TARGET_TAG" ]; then
+            echo "No new upstream tag found."
+            echo "should_build=false" >> $GITHUB_OUTPUT
+          else
+            echo "New upstream tag found: $TARGET_TAG"
+            echo "new_tag=$TARGET_TAG" >> $GITHUB_OUTPUT
+            echo "current_tag=$CURRENT_TAG" >> $GITHUB_OUTPUT
+            echo "should_build=true" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare branch and tag names
+        id: prepare
+        if: steps.check.outputs.should_build == 'true'
+        run: |
+          TIMESTAMP=$(date "+%Y%m%d%H%M%S")
+          NEW_TAG=${{ steps.check.outputs.new_tag }}
+          VERSION=${NEW_TAG#v}
+
+          # actions-v4.5.9-YYYYMMDDHHMMSS
+          CI_TAG="actions-${NEW_TAG}-${TIMESTAMP}"
+          # 4.5.9-YYYYMMDDHHMMSS (Docker タグ)
+          DOCKER_TAG="${VERSION}-${TIMESTAMP}"
+
+          echo "ci_tag=$CI_TAG" >> $GITHUB_OUTPUT
+          echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+          echo "CI tag: $CI_TAG"
+          echo "Docker tag: $DOCKER_TAG"
+
+      - name: Add upstream remote and fetch
+        if: steps.check.outputs.should_build == 'true'
+        run: |
+          git remote add upstream https://github.com/mastodon/mastodon.git || true
+          git fetch upstream --tags
+
+      - name: Create upstream branch
+        if: steps.check.outputs.should_build == 'true'
+        run: |
+          NEW_TAG=${{ steps.check.outputs.new_tag }}
+          UPSTREAM_BRANCH="upstream-${NEW_TAG}"
+
+          # upstream-v4.5.9 ブランチをupstreamタグから作成(-f で上書き)
+          git checkout -B "$UPSTREAM_BRANCH" "refs/tags/$NEW_TAG"
+          git push origin "$UPSTREAM_BRANCH" --force
+          echo "Pushed branch: $UPSTREAM_BRANCH"
+
+          # handon-production に戻る
+          git checkout handon-production
+
+      - name: Create CI branch and rebase
+        if: steps.check.outputs.should_build == 'true'
+        id: rebase
+        run: |
+          NEW_TAG=${{ steps.check.outputs.new_tag }}
+          CI_TAG=${{ steps.prepare.outputs.ci_tag }}
+          UPSTREAM_BRANCH="upstream-${NEW_TAG}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # handon-production から CI ブランチを作成
+          git checkout -b "$CI_TAG"
+
+          # upstream ブランチにrebase (build-taged-release.sh と同じ流れ)
+          if git rebase "$UPSTREAM_BRANCH"; then
+            echo "rebase_success=true" >> $GITHUB_OUTPUT
+            echo "Rebase succeeded!"
+          else
+            echo "rebase_success=false" >> $GITHUB_OUTPUT
+            git rebase --abort
+            echo "Rebase failed!"
+          fi
+
+      - name: Push CI branch and update handon-production
+        if: steps.check.outputs.should_build == 'true' && steps.rebase.outputs.rebase_success == 'true'
+        run: |
+          CI_TAG=${{ steps.prepare.outputs.ci_tag }}
+          NEW_TAG=${{ steps.check.outputs.new_tag }}
+
+          # CI ブランチをpush
+          git push origin "$CI_TAG"
+
+          # actions-v4.5.9-YYYYMMDDHHMMSS タグを打つ (refs/tags/ を明示してブランチ名と衝突回避)
+          git tag "$CI_TAG"
+          git push origin "refs/tags/$CI_TAG"
+
+          # handon-production を force update
+          git push origin "HEAD:handon-production" --force
+
+      - name: Create issue on rebase failure
+        if: steps.check.outputs.should_build == 'true' && steps.rebase.outputs.rebase_success == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const newTag = '${{ steps.check.outputs.new_tag }}';
+            const currentTag = '${{ steps.check.outputs.current_tag }}';
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Rebase failed: upstream ${newTag}`,
+              body: `## Rebase Conflict Detected\n\n` +
+                    `- **Current tag**: \`${currentTag}\`\n` +
+                    `- **Upstream tag**: \`${newTag}\`\n` +
+                    `- **Run**: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n` +
+                    `## 手順\n` +
+                    `\`\`\`bash\n` +
+                    `git fetch upstream\n` +
+                    `git checkout -B upstream-${newTag} refs/tags/${newTag}\n` +
+                    `git checkout handon-production\n` +
+                    `git rebase upstream-${newTag}\n` +
+                    `# conflict解消後\n` +
+                    `git push origin HEAD:handon-production --force\n` +
+                    `\`\`\`\n\n` +
+                    `解消後は workflow_dispatch で build をトリガーしてください。`,
+              labels: ['rebase-conflict', 'upstream-update']
+            });
+
+  build-and-push:
+    needs: check-and-rebase
+    if: needs.check-and-rebase.outputs.should_build == 'true' && needs.check-and-rebase.outputs.rebase_success == 'true'
+    uses: ./.github/workflows/build-container-image.yml
+    with:
+      file_to_build: Dockerfile
+      push_to_images: ghcr.io/${{ github.repository }}
+      ref: ${{ needs.check-and-rebase.outputs.ci_tag }}
+      cache: false
+      flavor: |
+        latest=false
+      tags: |
+        type=raw,value=${{ needs.check-and-rebase.outputs.docker_tag }}
+    secrets: inherit
+
+  build-and-push-streaming:
+    needs: check-and-rebase
+    if: needs.check-and-rebase.outputs.should_build == 'true' && needs.check-and-rebase.outputs.rebase_success == 'true'
+    uses: ./.github/workflows/build-container-image.yml
+    with:
+      file_to_build: streaming/Dockerfile
+      push_to_images: ghcr.io/${{ github.repository }}-streaming
+      ref: ${{ needs.check-and-rebase.outputs.ci_tag }}
+      cache: false
+      flavor: |
+        latest=false
+      tags: |
+        type=raw,value=${{ needs.check-and-rebase.outputs.docker_tag }}
+    secrets: inherit
+
+  update-gitops:
+    needs:
+      - check-and-rebase
+      - build-and-push
+      - build-and-push-streaming
+    if: needs.check-and-rebase.outputs.should_build == 'true' && needs.check-and-rebase.outputs.rebase_success == 'true'
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_TAG: ${{ needs.check-and-rebase.outputs.docker_tag }}
+      NEW_TAG: ${{ needs.check-and-rebase.outputs.new_tag }}
+      IMAGE: ghcr.io/${{ github.repository }}
+      IMAGE_STREAMING: ghcr.io/${{ github.repository }}-streaming
+      GH_TOKEN: ${{ secrets.GH_PAT }}
+
+    steps:
+      - name: Checkout k8sg1-repo
+        uses: actions/checkout@v4
+        with:
+          repository: highemerly/k8sg1-repo
+          token: ${{ secrets.GH_PAT }}
+          path: k8sg1-repo
+
+      - name: Update dev manifests and create PR
+        working-directory: k8sg1-repo
+        run: |
+          BRANCH="update/handon-dev-${DOCKER_TAG}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+
+          # web/sidekiq のイメージタグを更新
+          sed -i "s|image: ${IMAGE}:.*|image: ${IMAGE}:${DOCKER_TAG}|g" \
+            manifests/handon/dev/web.yaml \
+            manifests/handon/dev/sidekiq.yaml
+
+          # streaming のイメージタグを更新
+          sed -i "s|image: ${IMAGE_STREAMING}:.*|image: ${IMAGE_STREAMING}:${DOCKER_TAG}|g" \
+            manifests/handon/dev/streaming.yaml
+
+          git add manifests/handon/dev/
+          git commit -m "chore: update handon dev image to ${NEW_TAG} (${DOCKER_TAG})"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --repo highemerly/k8sg1-repo \
+            --title "Update handon dev: ${NEW_TAG}" \
+            --body "## Handon Image Update (dev)
+
+          - **Upstream tag**: \`${NEW_TAG}\`
+          - **Docker tag**: \`${DOCKER_TAG}\`
+          - **Image**: \`${IMAGE}\`
+          - **Streaming image**: \`${IMAGE_STREAMING}\`
+
+          devをマージ・確認後、prd側のPRをマージしてください。" \
+            --base main \
+            --head "$BRANCH" \
+            --label "automated,handon-update,dev"
+
+      - name: Update prd manifests and create PR
+        working-directory: k8sg1-repo
+        run: |
+          BRANCH="update/handon-prd-${DOCKER_TAG}"
+          git checkout main
+          git checkout -b "$BRANCH"
+
+          # web/sidekiq のイメージタグを更新
+          sed -i "s|image: ${IMAGE}:.*|image: ${IMAGE}:${DOCKER_TAG}|g" \
+            manifests/handon/prd/web.yaml \
+            manifests/handon/prd/sidekiq-default.yaml \
+            manifests/handon/prd/sidekiq-federation.yaml \
+            manifests/handon/prd/sidekiq-misc.yaml
+
+          # streaming のイメージタグを更新
+          sed -i "s|image: ${IMAGE_STREAMING}:.*|image: ${IMAGE_STREAMING}:${DOCKER_TAG}|g" \
+            manifests/handon/prd/streaming.yaml
+
+          git add manifests/handon/prd/
+          git commit -m "chore: update handon prd image to ${NEW_TAG} (${DOCKER_TAG})"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --repo highemerly/k8sg1-repo \
+            --title "Update handon prd: ${NEW_TAG}" \
+            --body "## Handon Image Update (prd)
+
+          - **Upstream tag**: \`${NEW_TAG}\`
+          - **Docker tag**: \`${DOCKER_TAG}\`
+          - **Image**: \`${IMAGE}\`
+
+          **devのPRをマージ・動作確認後にこちらをマージしてください。**" \
+            --base main \
+            --head "$BRANCH" \
+            --label "automated,handon-update,prd"
