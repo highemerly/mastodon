@@ -191,7 +191,7 @@ jobs:
     uses: ./.github/workflows/build-container-image.yml
     with:
       file_to_build: Dockerfile
-      push_to_images: ghcr.io/${{ github.repository }}/handon
+      push_to_images: ghcr.io/${{ github.repository }}
       cache: false
       flavor: |
         latest=false
@@ -205,12 +205,12 @@ jobs:
     uses: ./.github/workflows/build-container-image.yml
     with:
       file_to_build: streaming/Dockerfile
-      push_to_images: ghcr.io/${{ github.repository }}/handon
+      push_to_images: ghcr.io/${{ github.repository }}-streaming
       cache: false
       flavor: |
         latest=false
       tags: |
-        type=raw,value=streaming-${{ needs.check-and-rebase.outputs.docker_tag }}
+        type=raw,value=${{ needs.check-and-rebase.outputs.docker_tag }}
     secrets: inherit
 
   update-gitops:
@@ -223,7 +223,8 @@ jobs:
     env:
       DOCKER_TAG: ${{ needs.check-and-rebase.outputs.docker_tag }}
       NEW_TAG: ${{ needs.check-and-rebase.outputs.new_tag }}
-      IMAGE: ghcr.io/${{ github.repository }}/handon
+      IMAGE: ghcr.io/${{ github.repository }}
+      IMAGE_STREAMING: ghcr.io/${{ github.repository }}-streaming
       GH_TOKEN: ${{ secrets.GH_PAT }}
 
     steps:
@@ -243,12 +244,12 @@ jobs:
           git checkout -b "$BRANCH"
 
           # web/sidekiq のイメージタグを更新
-          sed -i "s|image: ${IMAGE}:[0-9].*|image: ${IMAGE}:${DOCKER_TAG}|g" \
+          sed -i "s|image: ${IMAGE}:.*|image: ${IMAGE}:${DOCKER_TAG}|g" \
             manifests/handon/dev/web.yaml \
             manifests/handon/dev/sidekiq.yaml
 
           # streaming のイメージタグを更新
-          sed -i "s|image: ${IMAGE}:streaming-[0-9].*|image: ${IMAGE}:streaming-${DOCKER_TAG}|g" \
+          sed -i "s|image: ${IMAGE_STREAMING}:.*|image: ${IMAGE_STREAMING}:${DOCKER_TAG}|g" \
             manifests/handon/dev/streaming.yaml
 
           git add manifests/handon/dev/
@@ -263,6 +264,7 @@ jobs:
           - **Upstream tag**: \`${NEW_TAG}\`
           - **Docker tag**: \`${DOCKER_TAG}\`
           - **Image**: \`${IMAGE}\`
+          - **Streaming image**: \`${IMAGE_STREAMING}\`
 
           devをマージ・確認後、prd側のPRをマージしてください。" \
             --base main \
@@ -277,14 +279,14 @@ jobs:
           git checkout -b "$BRANCH"
 
           # web/sidekiq のイメージタグを更新
-          sed -i "s|image: ${IMAGE}:[0-9].*|image: ${IMAGE}:${DOCKER_TAG}|g" \
+          sed -i "s|image: ${IMAGE}:.*|image: ${IMAGE}:${DOCKER_TAG}|g" \
             manifests/handon/prd/web.yaml \
             manifests/handon/prd/sidekiq-default.yaml \
             manifests/handon/prd/sidekiq-federation.yaml \
             manifests/handon/prd/sidekiq-misc.yaml
 
           # streaming のイメージタグを更新
-          sed -i "s|image: ${IMAGE}:streaming-[0-9].*|image: ${IMAGE}:streaming-${DOCKER_TAG}|g" \
+          sed -i "s|image: ${IMAGE_STREAMING}:.*|image: ${IMAGE_STREAMING}:${DOCKER_TAG}|g" \
             manifests/handon/prd/streaming.yaml
 
           git add manifests/handon/prd/
