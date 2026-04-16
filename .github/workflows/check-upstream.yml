@@ -150,9 +150,9 @@ jobs:
           # CI ブランチをpush
           git push origin "$CI_TAG"
 
-          # actions-v4.5.9-YYYYMMDDHHMMSS タグを打つ
+          # actions-v4.5.9-YYYYMMDDHHMMSS タグを打つ (refs/tags/ を明示してブランチ名と衝突回避)
           git tag "$CI_TAG"
-          git push origin "$CI_TAG" --tags
+          git push origin "refs/tags/$CI_TAG"
 
           # handon-production を force update
           git push origin "HEAD:handon-production" --force
