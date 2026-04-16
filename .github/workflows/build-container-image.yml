@@ -18,6 +18,14 @@ on:
         type: string
       file_to_build:
         type: string
+      ref:
+        type: string
+        description: 'Git ref to checkout (branch, tag, or SHA). Defaults to the workflow ref if not specified.'
+        default: ''
+
+permissions:
+  contents: read
+  packages: write
 
 # This builds multiple images with one runner each, allowing us to build for multiple architectures
 # using Github's runners.
@@ -36,6 +44,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ inputs.ref != '' && inputs.ref || github.ref }}
 
       - name: Prepare
         env:
@@ -121,6 +131,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ inputs.ref != '' && inputs.ref || github.ref }}
 
       - name: Download digests
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
