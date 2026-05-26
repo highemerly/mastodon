@@ -260,11 +260,10 @@ jobs:
 
           # handon-dev の停止パッチをコメントアウト
           # (この PR をマージすると Flux が handon-dev を起動して新バージョンの動作確認ができる。
-          #  検証完了後は別 PR でコメントアウトを戻して再停止する。)
+          #  検証完了後は別 PR でコメントアウトを戻して再停止する。
+          #  注: handon-dev-postgres は常時起動運用のため Deployment 側の停止パッチのみ操作する。)
           STOP_PATCH_COMMENTED=false
           if grep -qE '^  # ▼▼▼ handon-dev 停止パッチ' clusters/production/apps.yaml; then
-            sed -i '/# ▼▼▼ handon-dev-postgres 停止パッチ/,/# ▲▲▲ handon-dev-postgres 停止パッチ ▲▲▲/ s/^/# /' \
-              clusters/production/apps.yaml
             sed -i '/# ▼▼▼ handon-dev 停止パッチ/,/# ▲▲▲ handon-dev 停止パッチ ▲▲▲/ s/^/# /' \
               clusters/production/apps.yaml
             STOP_PATCH_COMMENTED=true
