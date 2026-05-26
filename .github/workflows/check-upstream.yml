@@ -154,6 +154,10 @@ jobs:
           git tag "$CI_TAG"
           git push origin "refs/tags/$CI_TAG"
 
+          # upstream の semver タグ (例: v4.5.9) を origin に push して処理済みマークとする
+          # これがないと CURRENT_TAG の判定が更新されず無限ループになる
+          git push origin "refs/tags/$NEW_TAG"
+
           # handon-production を force update
           git push origin "HEAD:handon-production" --force
 
