@@ -14,11 +14,11 @@
         = material_symbol 'cancel'
         = ' '
         = t 'admin.push_subscription_blocks.disabled'
-  %td.nowrap
+  %td.nowrap.align-end
     - if push_subscription_block.enable?
-      = table_link_to 'power-off', t('admin.push_subscription_blocks.disable'), disable_admin_push_subscription_block_path(push_subscription_block), method: :post, data: { confirm: t('admin.accounts.are_you_sure') }
+      = link_to material_symbol('power_off'), disable_admin_push_subscription_block_path(push_subscription_block), title: t('admin.push_subscription_blocks.disable'), method: :post, data: { confirm: t('admin.accounts.are_you_sure') }, class: 'table-icon-link'
     - else
-      = table_link_to 'power-off', t('admin.push_subscription_blocks.enable'), enable_admin_push_subscription_block_path(push_subscription_block), method: :post, data: { confirm: t('admin.accounts.are_you_sure') }
+      = link_to material_symbol('power_off'), enable_admin_push_subscription_block_path(push_subscription_block), title: t('admin.push_subscription_blocks.enable'), method: :post, data: { confirm: t('admin.accounts.are_you_sure') }, class: 'table-icon-link'
 
-    = table_link_to 'pencil', t('admin.push_subscription_blocks.edit.title'), edit_admin_push_subscription_block_path(push_subscription_block)
-    = table_link_to 'times', t('admin.push_subscription_blocks.delete'), admin_push_subscription_block_path(push_subscription_block), method: :delete, data: { confirm: t('admin.accounts.are_you_sure') }
+    = link_to material_symbol('edit'), edit_admin_push_subscription_block_path(push_subscription_block), title: t('admin.push_subscription_blocks.edit.title'), class: 'table-icon-link'
+    = link_to material_symbol('delete'), admin_push_subscription_block_path(push_subscription_block), title: t('admin.push_subscription_blocks.delete'), method: :delete, data: { confirm: t('admin.accounts.are_you_sure') }, class: 'table-icon-link table-icon-link--danger'
