@@ -1,0 +1,164 @@
+name: Manual Build and Deploy (dev)
+
+# 手動で rebase 済みのブランチ（例: メジャーバージョン更新で自動 rebase が失敗したケース）を
+# GitHub Actions 上でビルドし、k8sg1-repo の handon-dev マニフェストを更新する PR を作成する。
+#
+# check-upstream.yml の「後半（ビルド + dev GitOps PR）」だけを、自動 rebase を飛ばして
+# 任意のブランチに対して実行する workflow_dispatch 版。
+#
+# 事前準備: ビルド対象ブランチを origin に push しておくこと（Actions が checkout するため）。
+#   git push origin handon46-YYYYMMDD01
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'ビルドするブランチ/タグ/SHA（事前に origin へ push 済みであること）'
+        type: string
+        required: true
+        default: 'handon46-2026061801'
+      upstream_tag:
+        description: 'ベースにした upstream の semver タグ（Docker タグ・PR 本文に使用）'
+        type: string
+        required: true
+        default: 'v4.6.0'
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.prepare.outputs.docker_tag }}
+      new_tag: ${{ steps.prepare.outputs.new_tag }}
+    steps:
+      - name: Prepare tag names
+        id: prepare
+        run: |
+          TIMESTAMP=$(date "+%Y%m%d%H%M%S")
+          NEW_TAG="${{ inputs.upstream_tag }}"
+          VERSION=${NEW_TAG#v}
+
+          # 4.6.0-YYYYMMDDHHMMSS (Docker タグ) — check-upstream.yml と同じ形式
+          DOCKER_TAG="${VERSION}-${TIMESTAMP}"
+
+          echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+          echo "new_tag=$NEW_TAG" >> $GITHUB_OUTPUT
+          echo "Building ref: ${{ inputs.ref }}"
+          echo "Docker tag: $DOCKER_TAG"
+
+  build-and-push:
+    needs: prepare
+    uses: ./.github/workflows/build-container-image.yml
+    with:
+      file_to_build: Dockerfile
+      push_to_images: ghcr.io/${{ github.repository }}
+      ref: ${{ inputs.ref }}
+      cache: false
+      flavor: |
+        latest=false
+      tags: |
+        type=raw,value=${{ needs.prepare.outputs.docker_tag }}
+    secrets: inherit
+
+  build-and-push-streaming:
+    needs: prepare
+    uses: ./.github/workflows/build-container-image.yml
+    with:
+      file_to_build: streaming/Dockerfile
+      push_to_images: ghcr.io/${{ github.repository }}-streaming
+      ref: ${{ inputs.ref }}
+      cache: false
+      flavor: |
+        latest=false
+      tags: |
+        type=raw,value=${{ needs.prepare.outputs.docker_tag }}
+    secrets: inherit
+
+  update-gitops-dev:
+    needs:
+      - prepare
+      - build-and-push
+      - build-and-push-streaming
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_TAG: ${{ needs.prepare.outputs.docker_tag }}
+      NEW_TAG: ${{ needs.prepare.outputs.new_tag }}
+      IMAGE: ghcr.io/${{ github.repository }}
+      IMAGE_STREAMING: ghcr.io/${{ github.repository }}-streaming
+      GH_TOKEN: ${{ secrets.GH_PAT }}
+
+    steps:
+      - name: Checkout k8sg1-repo
+        uses: actions/checkout@v4
+        with:
+          repository: highemerly/k8sg1-repo
+          token: ${{ secrets.GH_PAT }}
+          path: k8sg1-repo
+
+      - name: Update dev manifests and create PR
+        working-directory: k8sg1-repo
+        run: |
+          BRANCH="update/handon-dev-${DOCKER_TAG}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+
+          # web/sidekiq のイメージタグを更新
+          sed -i "s|image: ${IMAGE}:.*|image: ${IMAGE}:${DOCKER_TAG}|g" \
+            manifests/handon/dev/web.yaml \
+            manifests/handon/dev/sidekiq.yaml
+
+          # streaming のイメージタグを更新
+          sed -i "s|image: ${IMAGE_STREAMING}:.*|image: ${IMAGE_STREAMING}:${DOCKER_TAG}|g" \
+            manifests/handon/dev/streaming.yaml
+
+          # handon-dev の停止パッチをコメントアウト
+          # (この PR をマージすると Flux が handon-dev を起動して新バージョンの動作確認ができる。
+          #  検証完了後は別 PR でコメントアウトを戻して再停止する。
+          #  注: handon-dev-postgres は常時起動運用のため Deployment 側の停止パッチのみ操作する。)
+          STOP_PATCH_COMMENTED=false
+          if grep -qE '^  # ▼▼▼ handon-dev 停止パッチ' clusters/production/apps.yaml; then
+            sed -i '/# ▼▼▼ handon-dev 停止パッチ/,/# ▲▲▲ handon-dev 停止パッチ ▲▲▲/ s/^/# /' \
+              clusters/production/apps.yaml
+            STOP_PATCH_COMMENTED=true
+            echo "Commented out handon-dev stop patches in clusters/production/apps.yaml"
+          else
+            echo "Note: handon-dev stop patches not found (already commented out or removed); skipping"
+          fi
+
+          git add manifests/handon/dev/ clusters/production/apps.yaml
+          if [ "$STOP_PATCH_COMMENTED" = "true" ]; then
+            COMMIT_MSG="chore: update handon dev image to ${NEW_TAG} (${DOCKER_TAG})
+
+          - Update image tags for web/sidekiq/streaming to ${DOCKER_TAG}
+          - Comment out handon-dev stop patches so merging this PR starts handon-dev for verification"
+          else
+            COMMIT_MSG="chore: update handon dev image to ${NEW_TAG} (${DOCKER_TAG})"
+          fi
+          git commit -m "$COMMIT_MSG"
+          git push origin "$BRANCH"
+
+          if [ "$STOP_PATCH_COMMENTED" = "true" ]; then
+            PR_BODY_EXTRA="
+
+          ⚠️ **このPRをマージすると handon-dev が起動します**（停止パッチを自動コメントアウト済み）。
+          動作確認後、別PRでコメントアウトを戻して停止状態に戻してください。
+          手順: \`docs/service/handon.md\` の「handon-dev の停止 / 起動」を参照。"
+          else
+            PR_BODY_EXTRA=""
+          fi
+
+          gh pr create \
+            --repo highemerly/k8sg1-repo \
+            --title "Update handon dev: ${NEW_TAG} (manual)" \
+            --body "## Handon Image Update (dev)
+
+          - **Upstream tag**: \`${NEW_TAG}\`
+          - **Docker tag**: \`${DOCKER_TAG}\`
+          - **Source ref**: \`${{ inputs.ref }}\` (手動 rebase 済みブランチ)
+          - **Image**: \`${IMAGE}\`
+          - **Streaming image**: \`${IMAGE_STREAMING}\`${PR_BODY_EXTRA}
+
+          手動 rebase したブランチからのビルドです。dev で動作確認後、prd への反映と handon-production の更新を別途実施してください。" \
+            --base main \
+            --head "$BRANCH" \
+            --label "handon"
