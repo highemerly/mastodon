@@ -268,3 +268,37 @@ p > .emojione[alt^=':']:active {
   --max-media-height-small: 300px;
   --max-media-height-large: 300px;
 }
+
+// ===========================================================================
+// Notifications
+// ===========================================================================
+
+// 通知1件(グループ/非グループ)の余白を圧縮(既定 padding:16px 24px)
+.notification-group,
+.notification-ungrouped {
+  padding: 6px 6px 2px;
+}
+
+// 非グループ通知のヘッダー行: 下マージンを詰め、左インデントを縮める
+.notification-ungrouped__header {
+  margin-bottom: 0; // 既定 16px
+  padding-inline-start: 6px; // 既定 24px
+}
+
+// ===========================================================================
+// Column header (モバイル/シングルカラム時のみ)
+//
+// $no-gap-breakpoint: 1175px -> 1174px 以下がシングルカラム。
+// 高さは column-header__title / back-button の padding(各13px) と
+// column-header__buttons の height(48px) で決まる。上下それぞれ約10px圧縮する。
+// ===========================================================================
+@media screen and (max-width: 1174px) {
+  .column-header__title,
+  .column-header__back-button {
+    padding-block: 3px; // 既定 13px
+  }
+
+  .column-header__buttons {
+    height: 28px; // 既定 48px
+  }
+}
