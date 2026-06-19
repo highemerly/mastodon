@@ -95,6 +95,11 @@ p > .emojione[alt^=':']:active {
   // 全体 padding 16px -> 8px(下だけ 2px)
   padding: 8px 8px 2px;
 
+  // status__info の下 padding 10px -> 6px
+  .status__info {
+    padding-bottom: 6px;
+  }
+
   // 通常アバター 46px -> 36px
   // account__avatar は size prop でインライン style 指定のため !important が必要
   .status__avatar > .account__avatar {
@@ -136,9 +141,19 @@ p > .emojione[alt^=':']:active {
     font-size: 13px;
   }
 
+  // 本文の上 padding 2px -> 0
+  .status__content {
+    padding-top: 0;
+  }
+
   // 本文をほんの少しだけ小さく(15px -> 14px)
   .status__content__text {
     font-size: 14px;
+  }
+
+  // 翻訳ボタンの上マージン 16px -> 2px
+  .status__content__translate-button {
+    margin-top: 2px;
   }
 
   // 本文内メディアの上マージン 14px -> 6px
@@ -156,7 +171,7 @@ p > .emojione[alt^=':']:active {
 // 内側は avatarSize=32 で既に小さく、表示名 14 / account 12 と独自に縮小済み。
 // 本体の方針に合わせ、時間と本文を更に小さくし、padding-top は 2px に。
 .status__wrapper .status--is-quote {
-  padding: 2px 8px 2px; // 既定 12px(上だけ 2px)
+  padding: 5px 8px; // 既定 12px(上下5px / 左右8px)
 
   // 投稿時間を 14px -> 12px(表示名 14 は据え置き)
   .status__relative-time {
@@ -228,8 +243,19 @@ p > .emojione[alt^=':']:active {
     width: 72px; // 既定 120px
   }
 
-  // 展開カード: 画像が縦に伸びすぎないよう横長比率で頭打ちに(object-fit:cover で切抜)
+  // 展開カード: 画像が縦に伸びすぎないよう横長比率で頭打ち + 高さ上限300px。
+  // object-fit:cover(.status-card__image-image)で超過分はトリミングされる。
   &.expanded .status-card__image {
     aspect-ratio: 1.91 / 1; // 既定 auto(自然縦横比)
+    max-height: 300px;
   }
+}
+
+// --- ユーザー投稿画像(media-gallery)の縦幅上限 -----------------------------
+// 単一画像(--layout-1)の高さは --max-media-height-small/large(基底 460/566px)で
+// 制御されている。タイムライン/引用内ではこの上限を 300px に下げてトリミング。
+// (詳細表示 .detailed-status は .status__wrapper 外なので影響を受けない)
+.status__wrapper {
+  --max-media-height-small: 300px;
+  --max-media-height-large: 300px;
 }
