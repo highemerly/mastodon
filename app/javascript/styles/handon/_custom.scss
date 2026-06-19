@@ -30,8 +30,8 @@ p > .emojione[alt^=':']:active {
    .status__content--single-emoji は status_content.jsx の isSingleCustomEmoji
    判定で付与される(CSS だけではテキスト有無を判定できないため)。 */
 .status__content--single-emoji .emojione.custom-emoji {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   margin: 0;
 }
 
@@ -283,6 +283,11 @@ p > .emojione[alt^=':']:active {
 .notification-ungrouped__header {
   margin-bottom: 0; // 既定 16px
   padding-inline-start: 6px; // 既定 24px
+}
+
+// グループ通知内のステータスに下マージン
+.notification-group__main__status {
+  margin-bottom: 6px;
 }
 
 // ===========================================================================
