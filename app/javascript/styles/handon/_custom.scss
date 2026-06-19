@@ -26,6 +26,15 @@ p > .emojione[alt^=':']:active {
   margin: 0;
 }
 
+/* (Stamp) 投稿が単一カスタム絵文字のみのとき大きく表示する。
+   .status__content--single-emoji は status_content.jsx の isSingleCustomEmoji
+   判定で付与される(CSS だけではテキスト有無を判定できないため)。 */
+.status__content--single-emoji .emojione.custom-emoji {
+  width: 64px;
+  height: 64px;
+  margin: 0;
+}
+
 /* (Custom emoji: Misskey compatibility) consider visibility of ultra-wide custom emojis */
 .column .status__wrapper .status .emojione {
   width: auto !important;

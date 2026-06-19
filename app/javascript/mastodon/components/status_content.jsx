@@ -31,6 +31,29 @@ export function getStatusContent(status) {
   return status.getIn(['translation', 'contentHtml']) || status.get('contentHtml');
 }
 
+const SINGLE_CUSTOM_EMOJI_REGEX = /^:([a-zA-Z0-9_]+):$/;
+
+/**
+ * Returns true when the status content is exactly one custom emoji and nothing
+ * else (no other text). Used to render it large like a "stamp".
+ * @param {string} content - the status content HTML
+ * @param {import('immutable').List} emojis - the status custom emojis
+ * @returns {boolean}
+ */
+export function isSingleCustomEmoji(content, emojis) {
+  if (!content || !emojis || emojis.size === 0) {
+    return false;
+  }
+
+  const match = content.replace(/<[^>]*>/g, '').trim().match(SINGLE_CUSTOM_EMOJI_REGEX);
+
+  if (!match) {
+    return false;
+  }
+
+  return emojis.some(emoji => emoji.get('shortcode') === match[1]);
+}
+
 class TranslateButton extends PureComponent {
 
   static propTypes = {
@@ -195,6 +218,7 @@ class StatusContent extends PureComponent {
     const classNames = classnames('status__content', {
       'status__content--with-action': this.props.onClick && this.props.history,
       'status__content--collapsed': renderReadMore,
+      'status__content--single-emoji': isSingleCustomEmoji(content, status.get('emojis')),
     });
 
     const readMoreButton = renderReadMore && (
