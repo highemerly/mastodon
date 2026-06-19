@@ -1,0 +1,140 @@
+// はんドンクラブ専用スタイル(差分のみ)
+//
+// ここに C/D(個別パーツ調整・余白調整)を書いていく。
+// application.scss の後ろで読み込まれるため、同一詳細度なら後勝ちで上書きされる。
+//
+// スコープの指針:
+//  - light/dark で色を変えたいとき:
+//      [data-color-scheme='dark'] & { ... }
+//  - high contrast 時のみ:
+//      [data-contrast='high'] & { ... }
+//  - 余白など色に依存しない調整はスコープ不要(共通で効く)
+//
+// 例(余白調整):
+//   .status {
+//     padding-block: 12px;
+//   }
+
+// ===========================================================================
+// Custom emoji
+// ===========================================================================
+
+/* (Custom emoji) Enlarge custom emojis */
+p > .emojione[alt^=':']:active {
+  width: 8em;
+  height: 8em;
+  margin: 0;
+}
+
+/* (Custom emoji: Misskey compatibility) consider visibility of ultra-wide custom emojis */
+.column .status__wrapper .status .emojione {
+  width: auto !important;
+}
+.column .detailed-status__wrapper .detailed-status .emojione {
+  width: auto !important;
+}
+
+// ===========================================================================
+// Visibility icons
+//
+// 色を light/dark で変えたいので SCSS 変数($lock-color 等)ではなく CSS カスタム
+// プロパティ(design token)を使う。SCSS 変数はコンパイル時に固定されるため、
+// data-color-scheme による実行時切替には反応できない。
+//
+// ここでは light/dark 対応済みの既存トークンを流用している:
+//   --color-text-brand-soft : くすんだ藍 (text-primary と indigo の oklab 中間)
+//                             -> フォロワー限定の控えめな強調
+//   --color-text-warning    : 琥珀/金   (light: yellow-700 / dark: yellow-400)
+//                             -> ダイレクトの強調
+// 独自色にしたい場合は末尾の「独自トークン定義」コメントを参照。
+// ===========================================================================
+
+/* (Visibility icon) remove public icon */
+.status-public .icon-globe {
+  display: none !important;
+}
+
+/* (Visibility icon) emphasize followers-only */
+.status-private .icon-lock {
+  color: var(--color-text-brand-soft) !important;
+}
+
+/* (Visibility icon) emphasize direct */
+.status-direct .icon-at {
+  color: var(--color-text-warning) !important;
+}
+
+// --- 独自色にしたい場合(既存トークン流用の代わりに) -------------------------
+// 下のコメントを外し、上の color を var(--handon-lock-color) /
+// var(--handon-at-color) に差し替える。auto は描画前に inline script が
+// light/dark の実値へ解決するので、2分岐だけ定義すればよい。
+//
+// [data-color-scheme='dark'],
+// html:not([data-color-scheme]) {  // 属性なしも dark 扱い(本体に合わせる)
+//   --handon-lock-color: #e0a500;
+//   --handon-at-color: #ff6b6b;
+// }
+// [data-color-scheme='light'] {
+//   --handon-lock-color: #b8860b;
+//   --handon-at-color: #d63031;
+// }
+
+// ===========================================================================
+// Timeline density
+//
+// タイムライン中の1トゥート(.status__wrapper > .status)を詰める。
+// `> .status` の直下指定で、内側の引用トゥート(.status--is-quote)には波及させない。
+// 既定値: padding 16px / アバター size=46px(React の size prop でインライン) /
+//         status__display-name 15px・22px / status__action-bar margin-top 16px
+// ===========================================================================
+
+.status__wrapper > .status {
+  // 全体 padding 16px -> 8px(下だけ 2px)
+  padding: 8px 8px 2px;
+
+  // status__info の縦詰め: アバター 46px -> 40px
+  // account__avatar は size prop でインライン style 指定のため !important が必要
+  .status__avatar > .account__avatar {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  // 表示名のフォント/行間を圧縮(値は微調整可)
+  .status__info .status__display-name {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  // 公開範囲アイコンを小さく(.icon は font-size 基準の 1em)
+  .status__visibility-icon {
+    font-size: 13px;
+  }
+
+  // アクションバーの上マージン 16px -> 6px
+  .status__action-bar {
+    margin-top: 6px;
+  }
+}
+
+// --- 引用トゥート(.status--is-quote) ---------------------------------------
+// 内側は avatarSize=32 で既に小さく、フォントも独自に縮小済みなので、
+// padding とボックス上マージンだけ本体トゥートに合わせて詰める。
+.status__wrapper .status--is-quote {
+  padding: 8px 8px 2px; // 既定 12px
+}
+
+.status__wrapper .status__quote {
+  margin-block-start: 8px; // 既定 16px
+}
+
+// --- prepend(ブースト/返信/ダイレクトの表示行) -----------------------------
+// boost/reply/direct はいずれも .status__prepend を共有(既定 padding:16px /
+// アイコン 16px)。行ごと詰めて、アイコンも少し小さくする。
+.status__wrapper > .status__prepend {
+  padding: 8px 8px 0; // 既定 16px / padding-bottom:0
+
+  .status__prepend__icon .icon {
+    width: 15px; // 既定 16px
+    height: 15px;
+  }
+}
