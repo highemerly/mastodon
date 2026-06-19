@@ -1,0 +1,13 @@
+// はんドンクラブ専用テーマ
+//
+// 構成: Mastodon 標準テーマ(application.scss)を丸ごと取り込み、その後ろで
+// handon/_custom.scss の独自スタイルを重ねて上書きする。これにより本体の
+// アップグレード追従は @use 'application' 一行で済む。
+//
+// 注意(4.6.0 仕様):
+//  - 色は可能な限り design token(--color-*) 経由で上書きする
+//  - light / dark / contrast 依存のスタイルは [data-color-scheme] /
+//    [data-contrast] 属性でスコープする(_custom.scss のコメント参照)
+
+@use 'application';
+@use 'handon/custom';
