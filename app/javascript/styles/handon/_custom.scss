@@ -262,11 +262,22 @@ p > .emojione[alt^=':']:active {
 
 // --- ユーザー投稿画像(media-gallery)の縦幅上限 -----------------------------
 // 単一画像(--layout-1)の高さは --max-media-height-small/large(基底 460/566px)で
-// 制御されている。タイムライン/引用内ではこの上限を 300px に下げてトリミング。
+// 制御されている。タイムライン/引用内ではこの上限を 300px に下げる。
 // (詳細表示 .detailed-status は .status__wrapper 外なので影響を受けない)
 .status__wrapper {
   --max-media-height-small: 300px;
   --max-media-height-large: 300px;
+}
+
+// 単一画像は aspect-ratio 指定なので、max-height はアスペクト比を通じて
+// max-width に転送され、画像全体が縮小される……のだが、v4.6.4 で本体に入った
+// .media-gallery { max-width: 100% } (#39812 横長画像のはみ出し修正) があると
+// WebKit(Safari/iOS) はこの転送を行わず、幅が 100% に張り付いて上下が
+// トリミングされてしまう。単一画像では min-height 由来の横方向はみ出し
+// (#39812 の対象・Chromium 固有)も起きないため、layout-1 に限り両方を無効化する。
+.status__wrapper .media-gallery--layout-1 {
+  max-width: none;
+  min-height: 0;
 }
 
 // ===========================================================================
