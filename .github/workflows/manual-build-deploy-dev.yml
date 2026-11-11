@@ -113,7 +113,7 @@ jobs:
 
           # handon-dev の停止パッチをコメントアウト
           # (この PR をマージすると Flux が handon-dev を起動して新バージョンの動作確認ができる。
-          #  検証完了後は別 PR でコメントアウトを戻して再停止する。
+          #  マージされると k8sg1-repo の Stop handon-dev workflow が停止用 PR を自動で作る。
           #  注: handon-dev-postgres は常時起動運用のため Deployment 側の停止パッチのみ操作する。)
           STOP_PATCH_COMMENTED=false
           if grep -qE '^  # ▼▼▼ handon-dev 停止パッチ' clusters/production/apps.yaml; then
@@ -141,7 +141,7 @@ jobs:
             PR_BODY_EXTRA="
 
           ⚠️ **このPRをマージすると handon-dev が起動します**（停止パッチを自動コメントアウト済み）。
-          動作確認後、別PRでコメントアウトを戻して停止状態に戻してください。
+          マージすると停止用の PR（Stop handon-dev）が自動で作成されます。動作確認後にそちらをマージして停止してください。
           手順: \`docs/service/handon.md\` の「handon-dev の停止 / 起動」を参照。"
           else
             PR_BODY_EXTRA=""
